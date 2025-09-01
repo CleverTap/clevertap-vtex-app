@@ -1,14 +1,36 @@
 <script>
   ;(function () {
-    var testField = '{{settings.testField}}'
+    var accountID = '{{settings.accountID}}'
+    var region = '{{settings.region}}'
 
-    if (!testField) {
+    if (!accountID || !region) {
       console.error(
-        'Warning: No value is defined. Please configure it in the apps admin.'
+        'Warning: Some values are not defined. Please configure them in the app admin.'
       )
       return
     }
 
-    // Add script here
+    window.clevertap = window.clevertap || {
+      event: [],
+      profile: [],
+      account: [],
+      onUserLogin: [],
+      notifications: [],
+      privacy: [],
+    }
+
+    window.clevertap.account.push({ id: accountID }, region)
+    window.clevertap.privacy.push({ optOut: false })
+    window.clevertap.privacy.push({ useIP: false })
+
+    var wzrk = document.createElement('script')
+    wzrk.type = 'text/javascript'
+    wzrk.async = true
+    wzrk.src =
+      ('https:' == document.location.protocol
+        ? 'https://d2r1yp2w7bby2u.cloudfront.net'
+        : 'http://static.clevertap.com') + '/js/clevertap.min.js'
+    var s = document.getElementsByTagName('script')[0]
+    s.parentNode.insertBefore(wzrk, s)
   })()
 </script>

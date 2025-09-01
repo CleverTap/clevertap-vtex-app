@@ -1,3 +1,4 @@
+import { sendCleverTapEvent } from './clevertap'
 import { formatCartSummary } from './format-cart-summary'
 import { getCategory } from './get-categories'
 import { getPrice } from './get-price'
@@ -12,4 +13,5 @@ export {
   getPrice,
   getQuantity,
   getCategory,
+  sendCleverTapEvent,
 }
