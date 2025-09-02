@@ -1,4 +1,7 @@
-interface Window extends Window {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  dataLayer: any[]
+import type { CleverTap } from './clevertap'
+
+declare global {
+  interface Window {
+    clevertap: CleverTap
+  }
 }
