@@ -1,7 +1,7 @@
 {
   "name": "vtex-clevertap-app",
   "vendor": "clevertappartnerbr",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "title": "VTEX CleverTap pixel app",
   "description": "VTEX app para integração com CleverTap, permitindo envio de eventos e campanhas.",
   "billingOptions": {
@@ -26,8 +26,13 @@
     "title": "VTEX CleverTap pixel app",
     "type": "object",
     "properties": {
-      "testField": {
-        "title": "Test field",
+      "accountID": {
+        "title": "Project ID",
+        "description": "Enter a value",
+        "type": "string"
+      },
+      "region": {
+        "title": "Region",
         "description": "Enter a value",
         "type": "string"
       }
