@@ -1,11 +1,8 @@
 import type { PixelMessage } from '../typings/events'
 import {
-  addPaymentInfo,
   addToCart,
   addToWishlist,
-  beginCheckout,
   filterManipulation,
-  orderPlaced,
   productClick,
   productView,
   promotionClick,
@@ -20,7 +17,7 @@ import {
 
 export function sendEnhancedEcommerceEvents(e: PixelMessage) {
   switch (e.data.eventName) {
-    // This trigger is not firing
+    // Signing Up (pending)
     case 'vtex:signUp': {
       signUp(e.data)
 
@@ -39,14 +36,12 @@ export function sendEnhancedEcommerceEvents(e: PixelMessage) {
       break
     }
 
-    // This trigger is not firing
     case 'vtex:promoView': {
       promoView(e.data)
 
       break
     }
 
-    // This trigger is not firing
     case 'vtex:promotionClick': {
       promotionClick(e.data)
 
@@ -83,32 +78,7 @@ export function sendEnhancedEcommerceEvents(e: PixelMessage) {
       break
     }
 
-    // This trigger is not firing
-    case 'vtex:beginCheckout': {
-      beginCheckout(e.data)
-
-      break
-    }
-
-    // Checkout Step Viewed (pending)
-
-    // Checkout Step Completed (pending)
-
-    // This trigger is not firing
-    case 'vtex:addPaymentInfo': {
-      addPaymentInfo(e.data)
-
-      break
-    }
-
     // Checkout Failed (pending)
-
-    // This trigger is not firing
-    case 'vtex:orderPlaced': {
-      orderPlaced(e.data)
-
-      break
-    }
 
     // Order Paid (pending)
 
@@ -116,7 +86,7 @@ export function sendEnhancedEcommerceEvents(e: PixelMessage) {
 
     // Charged (pending)
 
-    // Order Cancelled (pending)
+    // Order Approved (pending)
 
     // Order Cancelled (pending)
 

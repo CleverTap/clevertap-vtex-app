@@ -1,14 +1,11 @@
 /* eslint-disable no-console */
 
 import type {
-  AddPaymentInfoData,
   AddToCartData,
   AddToWishlistData,
-  BeginCheckoutData,
   FilterManipulationData,
   HomePageInfo,
   OrderForm,
-  OrderPlacedData,
   ProductClickData,
   ProductPageInfoData,
   ProductViewData,
@@ -278,30 +275,6 @@ export function viewCart(eventData: ViewCartData) {
   }
 
   sendCleverTapEvent(eventName, data)
-}
-
-export function beginCheckout(eventData: BeginCheckoutData) {
-  const eventName = 'Checkout Started'
-
-  console.log(eventName, eventData)
-
-  // TODO: Send via clevertap sdk
-}
-
-export function addPaymentInfo(eventData: AddPaymentInfoData) {
-  const eventName = 'Payment info'
-
-  console.log(eventName, eventData)
-
-  // TODO: Send via clevertap sdk
-}
-
-export function orderPlaced(eventData: OrderPlacedData) {
-  const eventName = 'Order Created'
-
-  console.log(eventName, eventData)
-
-  // TODO: Send via clevertap sdk
 }
 
 export function addToWishlist(eventData: AddToWishlistData) {
