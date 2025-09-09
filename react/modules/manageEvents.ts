@@ -6,6 +6,7 @@ import type {
   FilterManipulationData,
   HomePageInfo,
   OrderForm,
+  OrderPlacedData,
   ProductClickData,
   ProductPageInfoData,
   ProductViewData,
@@ -379,6 +380,18 @@ export function share(eventData: ShareData) {
     // TODO: Check where to get this info
     image_url:
       'https://assets.vans.com/images/t_img/c_fill,g_center,f_auto,h_573,w_458,e_unsharp_mask:100/dpr_2.0/v1739986118/VN000D60BLK-ALT1/UltraRange-20-Shoe.png',
+  }
+
+  sendCleverTapEvent(eventName, data)
+}
+
+export function orderPlaced(eventData: OrderPlacedData) {
+  const eventName = 'Order Created'
+
+  const { transactionId } = eventData
+
+  const data = {
+    order_id: transactionId,
   }
 
   sendCleverTapEvent(eventName, data)

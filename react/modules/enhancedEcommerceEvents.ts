@@ -3,6 +3,7 @@ import {
   addToCart,
   addToWishlist,
   filterManipulation,
+  orderPlaced,
   productClick,
   productView,
   promotionClick,
@@ -86,13 +87,14 @@ export function sendEnhancedEcommerceEvents(e: PixelMessage) {
 
     // Charged (pending)
 
-    // Order Approved (pending)
+    case 'vtex:orderPlaced': {
+      orderPlaced(e.data)
+
+      break
+    }
 
     // Order Cancelled (pending)
-
-    // Coupon Applied (pending)
-
-    // Coupon Denied (pending)
+    // vtex:refund
 
     case 'vtex:addToWishlist': {
       addToWishlist(e.data)
