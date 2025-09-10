@@ -12,19 +12,11 @@ import {
   removeToWishlist,
   search,
   share,
-  signUp,
   viewCart,
 } from './manageEvents'
 
 export function sendEnhancedEcommerceEvents(e: PixelMessage) {
   switch (e.data.eventName) {
-    // Signing Up (pending)
-    case 'vtex:signUp': {
-      signUp(e.data)
-
-      break
-    }
-
     case 'vtex:search': {
       search(e.data)
 

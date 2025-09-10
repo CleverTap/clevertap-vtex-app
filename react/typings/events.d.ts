@@ -1,6 +1,5 @@
 export interface PixelMessage extends MessageEvent {
   data:
-    | SignUpData
     | SearchData
     | FilterManipulationData
     | HomePageInfo
@@ -32,10 +31,8 @@ export interface EventData {
   currency: string
 }
 
-export interface SignUpData extends LoginData, EventData {
-  event: 'signUp'
-  eventType: 'vtex:signUp'
-  eventName: 'vtex:signUp'
+export interface SignUpData {
+  email: string
 }
 
 export interface SearchData extends EventData {
