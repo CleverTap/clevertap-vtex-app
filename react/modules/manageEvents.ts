@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-
 import type {
   AddToCartData,
   AddToWishlistData,
@@ -33,9 +31,13 @@ import {
 export function signUp(eventData: SignUpData) {
   const eventName = 'Signing Up'
 
-  console.log(eventName, eventData)
+  const { email } = eventData
 
-  // TODO: Send via clevertap sdk
+  const data = {
+    email,
+  }
+
+  sendCleverTapEvent(eventName, data)
 }
 
 export function search(eventData: SearchData) {
