@@ -1,7 +1,7 @@
 <script>
   ;(function () {
-    var accountID = '{{settings.accountID}}'
-    var region = '{{settings.region}}'
+    let accountID = '{{settings.accountID}}'
+    let region = '{{settings.region}}'
 
     if (!accountID || !region) {
       console.error(
@@ -10,32 +10,17 @@
       return
     }
 
-    var expires = new Date()
-    expires.setTime(expires.getTime() + 7 * 24 * 60 * 60 * 1000)
-    document.cookie = 'clevertapAccountID=' + encodeURIComponent(accountID) + ';path=/;expires=' + expires.toUTCString()
-    document.cookie = 'clevertapRegion=' + encodeURIComponent(region) + ';path=/;expires=' + expires.toUTCString()
-
-    window.clevertap = window.clevertap || {
-      event: [],
-      profile: [],
-      account: [],
-      onUserLogin: [],
-      notifications: [],
-      privacy: [],
+    const clevertapConfigs = {
+      accountID: accountID,
+      region: region,
+      privacy: { optOut: false, useIP: false },
+      spa: true,
     }
 
-    window.clevertap.account.push({ id: accountID }, region)
-    window.clevertap.privacy.push({ optOut: false })
-    window.clevertap.privacy.push({ useIP: false })
-
-    var wzrk = document.createElement('script')
-    wzrk.type = 'text/javascript'
-    wzrk.async = true
-    wzrk.src =
-      ('https:' == document.location.protocol
-        ? 'https://d2r1yp2w7bby2u.cloudfront.net'
-        : 'http://static.clevertap.com') + '/js/clevertap.min.js'
-    var s = document.getElementsByTagName('script')[0]
-    s.parentNode.insertBefore(wzrk, s)
+    try {
+      localStorage.setItem('clevertapConfigs', JSON.stringify(clevertapConfigs))
+    } catch (e) {
+      console.error('CleverTap: failed to save config to localStorage', e)
+    }
   })()
 </script>

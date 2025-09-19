@@ -4,6 +4,7 @@
   },
   "devDependencies": {
     "@apollo/react-testing": "^3.1.3",
+    "@types/clevertap-web-sdk": "^1.1.13",
     "@types/graphql": "^14.5.0",
     "@types/jest": "^25.1.5",
     "@types/node": "^13.11.0",
@@ -12,6 +13,7 @@
     "@vtex/test-tools": "^3.1.0",
     "apollo-cache-inmemory": "^1.6.5",
     "apollo-client": "^2.6.8",
+    "clevertappartnerbr.vtex-clevertap-app": "https://arthurrod--clevertappartnerbr.myvtex.com/_v/private/typings/linked/v1/clevertappartnerbr.vtex-clevertap-app@0.0.7+build1758290580/public/@types/clevertappartnerbr.vtex-clevertap-app",
     "graphql": "^14.5.4",
     "react-intl": "^3.11.0",
     "typescript": "3.9.7",
@@ -19,6 +21,7 @@
     "vtex.render-runtime": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.render-runtime@8.136.1/public/@types/vtex.render-runtime"
   },
   "dependencies": {
+    "clevertap-web-sdk": "^2.2.2",
     "jwt-decode": "3.1.2"
   }
 }
