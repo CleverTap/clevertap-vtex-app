@@ -1,9 +1,10 @@
 import { canUseDOM } from 'vtex.render-runtime'
 
-import type { PixelMessage } from './typings/events'
+import initCleverTap from './lib/clevertap'
 import { sendEnhancedEcommerceEvents } from './modules/enhancedEcommerceEvents'
 import { sendLegacyEvents } from './modules/legacyEvents'
 import { sendRequestEvents } from './modules/requestEvents'
+import type { PixelMessage } from './typings/events'
 
 export function handleEvents(e: PixelMessage) {
   sendEnhancedEcommerceEvents(e)
@@ -12,5 +13,7 @@ export function handleEvents(e: PixelMessage) {
 }
 
 if (canUseDOM) {
+  initCleverTap()
+
   window.addEventListener('message', handleEvents)
 }

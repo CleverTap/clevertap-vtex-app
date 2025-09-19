@@ -1303,6 +1303,11 @@
   dependencies:
     "@babel/types" "^7.3.0"
 
+"@types/clevertap-web-sdk@^1.1.13":
+  version "1.1.13"
+  resolved "https://registry.yarnpkg.com/@types/clevertap-web-sdk/-/clevertap-web-sdk-1.1.13.tgz#7ffb0678860e7ebb78e3fcd5ca78be6a2b183f16"
+  integrity sha512-GTu0TanKytPOWLj/lJQYY4qhfI4B8qS2Fv5KQ81+unRgo5TTvQ5ucHZRZoftDl5dsWWSXJFoLg/z+MnGgrFOTw==
+
 "@types/color-name@^1.1.1":
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/@types/color-name/-/color-name-1.1.1.tgz#1c1261bbeaa10a8055bbc5d8ab84b7b2afc846a0"
@@ -1966,6 +1971,13 @@ class-utils@^0.3.5:
     isobject "^3.0.0"
     static-extend "^0.1.1"
 
+clevertap-web-sdk@^2.2.2:
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/clevertap-web-sdk/-/clevertap-web-sdk-2.2.2.tgz#559eeecf01897c68a345ebf9cd77a0bfbbd7b973"
+  integrity sha512-PWWOtwvIAxIf1FbEgVdiYuUdUjli+lGpgwmhOPOvIysU42RPu8T7BP+83jr8TUTEKBU0Bh48gH4v8Iy6YgJ6/A==
+  dependencies:
+    crypto-js "^4.2.0"
+
 cliui@^5.0.0:
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/cliui/-/cliui-5.0.0.tgz#deefcfdb2e800784aa34f46fa08e06851c7bbbc5"
@@ -2069,6 +2081,11 @@ cross-spawn@^6.0.0:
     semver "^5.5.0"
     shebang-command "^1.2.0"
     which "^1.2.9"
+
+crypto-js@^4.2.0:
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/crypto-js/-/crypto-js-4.2.0.tgz#4d931639ecdfd12ff80e8186dba6af2c2e856631"
+  integrity sha512-KALDyEYgpY+Rlob/iriUtjV6d5Eq+Y191A5g4UqLAi8CyGP9N1+FdVbkc1SxKc2r4YAYqG8JzO2KGL+AizD70Q==
 
 css.escape@^1.5.1:
   version "1.5.1"
