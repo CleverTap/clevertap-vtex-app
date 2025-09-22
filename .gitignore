@@ -32,7 +32,8 @@ docs/_book/
 .idea
 npm-debug.log
 .build/
-lib
+# Uncomment if any unwanted information passes in the commit
+# lib
 *.orig
 .vscode
 package-lock.json

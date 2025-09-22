@@ -277,6 +277,8 @@ interface ItemSummary {
   itemId: string
   ean: string
   name: string
+  image?: Image
+  images?: Image[]
   referenceId: { Key: string; Value: string }
   seller: Seller
   sellers: Seller[]

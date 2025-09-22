@@ -24,6 +24,7 @@ import {
   formatCartSummary,
   getCategory,
   getItemFromStorage,
+  getPaymentMethodsString,
   getPrice,
   getQuantity,
   getSeller,
@@ -133,9 +134,9 @@ export function productView(eventData: ProductViewData) {
     detailUrl,
   } = product
 
-  const { itemId, imageUrl, ean } = selectedSku
+  const { itemId, imageUrl, ean, sellers } = selectedSku
 
-  const seller = getSeller(selectedSku.sellers)
+  const seller = getSeller(sellers)
   const price = getPrice(seller)
   const quantity = getQuantity(seller)
   const category = getCategory(categories)
@@ -159,10 +160,28 @@ export function productView(eventData: ProductViewData) {
 export function productClick(eventData: ProductClickData) {
   const eventName = 'Product Clicked'
 
-  const { list } = eventData
+  const { list, product } = eventData
+  const { productId, sku, categories, productName, brand, detailUrl } = product
+
+  const { itemId, image, ean, seller } = sku
+  const imageUrl = image ? image.imageUrl : ''
+
+  const price = getPrice(seller)
+  const quantity = getQuantity(seller)
+  const category = getCategory(categories)
 
   const data = {
     position: list,
+    product_id: productId,
+    sku: itemId,
+    category,
+    name: productName,
+    variant: ean,
+    brand,
+    price,
+    quantity,
+    url: detailUrl,
+    image_url: imageUrl,
   }
 
   clevertap.event.push(eventName, data)
@@ -206,8 +225,7 @@ export function addToCart(eventData: AddToCartData) {
     quantity,
     url: detailUrl,
     image_url: imageUrl,
-    // TODO: Check where to get this info
-    prodUct_is_wishlisted: true,
+    // prodUct_is_wishlisted: true,
   }
 
   clevertap.event.push(eventName, data)
@@ -265,9 +283,9 @@ export function viewCart(eventData: ViewCartData) {
 
   const { id, marketingData } = orderForm
 
-  const { items: eventDataItems } = eventData
+  const { items } = eventData
 
-  const { totalItems, totalValue } = formatCartSummary(eventDataItems, {
+  const { totalItems, totalValue } = formatCartSummary(items, {
     dividePrice: true,
   })
 
@@ -300,8 +318,7 @@ export function addToWishlist(eventData: AddToWishlistData) {
   const category = getCategory(categories)
 
   const data = {
-    // TODO: Check where to get this info
-    wishlist_id: 'teste123',
+    // wishlist_id: 'teste123',
     wishlist_name: list,
     product_id: productId,
     sku: itemId,
@@ -337,8 +354,7 @@ export function removeToWishlist(eventData: RemoveToWishlistData) {
   const category = getCategory(categories)
 
   const data = {
-    // TODO: Check where to get this info
-    wishlist_id: 'teste123',
+    // wishlist_id: 'teste123',
     wishlist_name: list,
     product_id: productId,
     sku: itemId,
@@ -362,27 +378,18 @@ export function share(eventData: ShareData) {
 
   const data = {
     share_via: method,
-    // TODO: Check where to get this info
-    product_id: '123sku123',
+    // product_id: '123sku123',
     sku: itemId,
-    // TODO: Check where to get this info
-    category: 'Shoes',
-    // TODO: Check where to get this info
-    name: 'UltraRange 2.0 Shoe',
-    // TODO: Check where to get this info
-    brand: 'Vans',
-    // TODO: Check where to get this info
-    variant: 'VN000D60BLK',
-    // TODO: Check where to get this info
-    price: 100,
-    // TODO: Check where to get this info
-    quantity: 10,
-    // TODO: Check where to get this info
-    url:
-      'https://www.vans.com/en-us/p/shoes/ultrarange-5140/ultrarange-20-shoe-VN000D60BLK',
-    // TODO: Check where to get this info
-    image_url:
-      'https://assets.vans.com/images/t_img/c_fill,g_center,f_auto,h_573,w_458,e_unsharp_mask:100/dpr_2.0/v1739986118/VN000D60BLK-ALT1/UltraRange-20-Shoe.png',
+    // category: 'Shoes',
+    // name: 'UltraRange 2.0 Shoe',
+    // brand: 'Vans',
+    // variant: 'VN000D60BLK',
+    // price: 100,
+    // quantity: 10,
+    // url:
+    //  'https://www.vans.com/en-us/p/shoes/ultrarange-5140/ultrarange-20-shoe-VN000D60BLK',
+    // image_url:
+    //  'https://assets.vans.com/images/t_img/c_fill,g_center,f_auto,h_573,w_458,e_unsharp_mask:100/dpr_2.0/v1739986118/VN000D60BLK-ALT1/UltraRange-20-Shoe.png',
   }
 
   clevertap.event.push(eventName, data)
@@ -391,10 +398,32 @@ export function share(eventData: ShareData) {
 export function orderPlaced(eventData: OrderPlacedData) {
   const eventName = 'Order Created'
 
-  const { transactionId } = eventData
+  const {
+    transactionId,
+    transactionAffiliation,
+    transactionTotal,
+    transactionSubtotal,
+    transactionShipping,
+    transactionDiscounts,
+    transactionTax,
+    transactionPaymentType,
+    coupon,
+    currency,
+  } = eventData
+
+  const paymentMethod = getPaymentMethodsString(transactionPaymentType)
 
   const data = {
     order_id: transactionId,
+    affiliation: transactionAffiliation,
+    value: transactionTotal,
+    revenue: transactionSubtotal,
+    shipping: transactionShipping,
+    tax: transactionTax,
+    discount: transactionDiscounts,
+    payment_method: paymentMethod,
+    currency,
+    coupon: coupon || '',
   }
 
   clevertap.event.push(eventName, data)

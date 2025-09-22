@@ -1,0 +1,105 @@
+import clevertap from 'clevertap-web-sdk'
+
+import type { CleverTapProfile } from '../typings/clevertap'
+
+export function initCleverTap() {
+  const savedConfig = localStorage.getItem('clevertapConfigs')
+  let config = null
+
+  if (savedConfig) {
+    try {
+      config = JSON.parse(savedConfig)
+    } catch (e) {
+      console.error('CleverTap: failed to parse config from localStorage', e)
+    }
+  }
+
+  if (!config || !config.accountID || !config.region) {
+    console.error('CleverTap: no valid configuration found.')
+
+    return null
+  }
+
+  clevertap.init(config.accountID, config.region)
+  clevertap.privacy.push(config.privacy)
+  clevertap.spa = config.spa
+
+  initClevertapNotifications()
+
+  return clevertap
+}
+
+export async function initClevertapProfile(): Promise<boolean> {
+  try {
+    const profile = await fetchProfileSession()
+
+    if (!profile?.email) return false
+
+    clevertap.onUserLogin.push({
+      Site: {
+        Name: profile.name,
+        Email: profile.email,
+        Phone: profile.phone,
+        'MSG-email': false,
+        'MSG-push': true,
+        'MSG-sms': true,
+        'MSG-whatsapp': true,
+      },
+    })
+
+    return true
+  } catch (err) {
+    console.error('Erro ao inicializar CleverTap profile:', err)
+
+    return false
+  }
+}
+
+export function initClevertapNotifications() {
+  // clevertap.notifications.push({
+  //   titleText: 'Would you like to receive Push Notifications?',
+  //   bodyText:
+  //     'We promise to only send you relevant content and give you updates on your transactions',
+  //   okButtonText: 'Sign me up!',
+  //   rejectButtonText: 'No thanks',
+  //   okButtonColor: '#F28046',
+  //   askAgainTimeInSeconds: 5,
+  //   serviceWorkerPath:
+  //     'https://clevertappartnerbr.vteximg.com.br/arquivos/service-worker.js',
+  // })
+}
+
+async function fetchProfileSession(): Promise<CleverTapProfile | null> {
+  try {
+    const res = await fetch(
+      '/api/sessions?items=profile.firstName,profile.lastName,profile.email,profile.phone'
+    )
+
+    if (!res.ok) {
+      throw new Error(`Erro na request: ${res.status}`)
+    }
+
+    const data = await res.json()
+
+    const namespaces = data?.namespaces?.profile
+
+    if (!namespaces) return null
+
+    const name =
+      [namespaces?.firstName?.value, namespaces?.lastName?.value]
+        .filter(Boolean)
+        .join(' ') || undefined
+
+    const profile: CleverTapProfile = {
+      name,
+      email: namespaces?.email?.value ?? undefined,
+      phone: namespaces?.phone?.value ?? undefined,
+    }
+
+    return profile
+  } catch (err) {
+    console.error('Erro ao buscar sessão de perfil:', err)
+
+    return null
+  }
+}
