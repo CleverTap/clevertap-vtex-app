@@ -1,3 +1,5 @@
+import clevertap from 'clevertap-web-sdk'
+
 import type {
   AddToCartData,
   AddToWishlistData,
@@ -25,7 +27,6 @@ import {
   getPrice,
   getQuantity,
   getSeller,
-  sendCleverTapEvent,
 } from './utils'
 
 export function signUp(eventData: SignUpData) {
@@ -37,7 +38,7 @@ export function signUp(eventData: SignUpData) {
     email,
   }
 
-  sendCleverTapEvent(eventName, data)
+  clevertap.event.push(eventName, data)
 }
 
 export function search(eventData: SearchData) {
@@ -49,7 +50,7 @@ export function search(eventData: SearchData) {
     keyword: term,
   }
 
-  sendCleverTapEvent(eventName, data)
+  clevertap.event.push(eventName, data)
 }
 
 export function filterManipulation(eventData: FilterManipulationData) {
@@ -66,7 +67,7 @@ export function filterManipulation(eventData: FilterManipulationData) {
     category: filterValue,
   }
 
-  sendCleverTapEvent(eventName, data)
+  clevertap.event.push(eventName, data)
 }
 
 export function categoryView(
@@ -85,7 +86,7 @@ export function categoryView(
     category: name,
   }
 
-  sendCleverTapEvent(eventName, data)
+  clevertap.event.push(eventName, data)
 }
 
 export function promoView(eventData: PromoViewData) {
@@ -100,7 +101,7 @@ export function promoView(eventData: PromoViewData) {
     name,
   }
 
-  sendCleverTapEvent(eventName, data)
+  clevertap.event.push(eventName, data)
 }
 
 export function promotionClick(eventData: PromotionClickData) {
@@ -115,7 +116,7 @@ export function promotionClick(eventData: PromotionClickData) {
     name,
   }
 
-  sendCleverTapEvent(eventName, data)
+  clevertap.event.push(eventName, data)
 }
 
 export function productView(eventData: ProductViewData) {
@@ -152,7 +153,7 @@ export function productView(eventData: ProductViewData) {
     image_url: imageUrl,
   }
 
-  sendCleverTapEvent(eventName, data)
+  clevertap.event.push(eventName, data)
 }
 
 export function productClick(eventData: ProductClickData) {
@@ -164,7 +165,7 @@ export function productClick(eventData: ProductClickData) {
     position: list,
   }
 
-  sendCleverTapEvent(eventName, data)
+  clevertap.event.push(eventName, data)
 }
 
 export function addToCart(eventData: AddToCartData) {
@@ -209,7 +210,7 @@ export function addToCart(eventData: AddToCartData) {
     prodUct_is_wishlisted: true,
   }
 
-  sendCleverTapEvent(eventName, data)
+  clevertap.event.push(eventName, data)
 }
 
 export function removeFromCart(eventData: RemoveFromCartData) {
@@ -252,7 +253,7 @@ export function removeFromCart(eventData: RemoveFromCartData) {
     image_url: imageUrl,
   }
 
-  sendCleverTapEvent(eventName, data)
+  clevertap.event.push(eventName, data)
 }
 
 export function viewCart(eventData: ViewCartData) {
@@ -277,7 +278,7 @@ export function viewCart(eventData: ViewCartData) {
     coupon: marketingData.coupon,
   }
 
-  sendCleverTapEvent(eventName, data)
+  clevertap.event.push(eventName, data)
 }
 
 export function addToWishlist(eventData: AddToWishlistData) {
@@ -314,7 +315,7 @@ export function addToWishlist(eventData: AddToWishlistData) {
     image_url: imageUrl,
   }
 
-  sendCleverTapEvent(eventName, data)
+  clevertap.event.push(eventName, data)
 }
 
 export function removeToWishlist(eventData: RemoveToWishlistData) {
@@ -351,7 +352,7 @@ export function removeToWishlist(eventData: RemoveToWishlistData) {
     image_url: imageUrl,
   }
 
-  sendCleverTapEvent(eventName, data)
+  clevertap.event.push(eventName, data)
 }
 
 export function share(eventData: ShareData) {
@@ -384,7 +385,7 @@ export function share(eventData: ShareData) {
       'https://assets.vans.com/images/t_img/c_fill,g_center,f_auto,h_573,w_458,e_unsharp_mask:100/dpr_2.0/v1739986118/VN000D60BLK-ALT1/UltraRange-20-Shoe.png',
   }
 
-  sendCleverTapEvent(eventName, data)
+  clevertap.event.push(eventName, data)
 }
 
 export function orderPlaced(eventData: OrderPlacedData) {
@@ -396,5 +397,5 @@ export function orderPlaced(eventData: OrderPlacedData) {
     order_id: transactionId,
   }
 
-  sendCleverTapEvent(eventName, data)
+  clevertap.event.push(eventName, data)
 }

@@ -1,12 +1,8 @@
-export interface CleverTapEvent {
-  [key: string]: any
-}
-
-export interface CleverTap {
-  event: {
-    push: (eventName: string, eventData: CleverTapEvent) => void
-  }
-  profile: {
-    push: (data: any) => void
-  }
+export interface CleverTapProfile {
+  name?: string
+  identity?: string | number
+  email?: string
+  phone?: string
+  gender?: 'M' | 'F'
+  dob?: Date
 }

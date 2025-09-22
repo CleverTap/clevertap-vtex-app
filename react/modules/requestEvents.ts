@@ -1,8 +1,10 @@
 import jwtDecode from 'jwt-decode'
 
+import { initClevertapProfile } from '../lib/clevertap'
 import { signUp } from './manageEvents'
 
 let loginEventSent = false
+let userProfileCreated = false
 
 export function sendRequestEvents() {
   const originalFetch = window.fetch
@@ -12,23 +14,35 @@ export function sendRequestEvents() {
 
     try {
       const url = (args[0] as any)?.url || args[0]
+      const method = (args[1] as any)?.method ?? 'GET'
 
+      // Inicializa profile CleverTap após PATCH
+      if (
+        !userProfileCreated &&
+        url.includes('/api/sessions') &&
+        method === 'PATCH'
+      ) {
+        const success = await initClevertapProfile()
+
+        if (success) userProfileCreated = true
+      }
+
+      // Envia evento de login
       if (
         !loginEventSent &&
         url.includes('/api/vtexid/pub/authentication/classic/validate')
       ) {
         const cloned = response.clone()
         const data = await cloned.json().catch(() => null)
+        const authCookie = data?.authCookie?.Value
 
-        if (data?.authCookie?.Value) {
+        if (authCookie) {
           try {
-            const decoded: { sub?: string } = jwtDecode(data.authCookie.Value)
+            const decoded: { sub?: string } = jwtDecode(authCookie)
 
             if (decoded.sub) {
               loginEventSent = true
-              const eventData = { email: decoded.sub }
-
-              signUp(eventData)
+              signUp({ email: decoded.sub })
             }
           } catch (err) {
             console.error('Erro ao decodificar authCookie:', err)

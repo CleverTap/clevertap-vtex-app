@@ -1,6 +1,6 @@
 import { canUseDOM } from 'vtex.render-runtime'
 
-import initCleverTap from './lib/clevertap'
+import { initCleverTap } from './lib/clevertap'
 import { sendEnhancedEcommerceEvents } from './modules/enhancedEcommerceEvents'
 import { sendLegacyEvents } from './modules/legacyEvents'
 import { sendRequestEvents } from './modules/requestEvents'
