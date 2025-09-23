@@ -12,7 +12,7 @@
     "@types/ramda": "types/npm-ramda#dist",
     "@vtex/api": "6.50.1",
     "@vtex/test-tools": "^1.0.0",
-    "clevertappartnerbr.vtex-clevertap-app": "https://arthurrod--clevertappartnerbr.myvtex.com/_v/private/typings/linked/v1/clevertappartnerbr.vtex-clevertap-app@0.0.7+build1758290580/public/@types/clevertappartnerbr.vtex-clevertap-app",
+    "clevertappartnerbr.vtex-clevertap-app": "http://clevertappartnerbr.vtexassets.com/_v/public/typings/v1/clevertappartnerbr.vtex-clevertap-app@0.0.10/public/@types/clevertappartnerbr.vtex-clevertap-app",
     "tslint": "^5.14.0",
     "tslint-config-vtex": "^2.1.0",
     "typescript": "3.9.7",

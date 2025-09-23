@@ -1,4 +1,4 @@
-import clevertap from '../lib/clevertap'
+import { getCleverTap } from '../lib/clevertap'
 
 const processedOrders = new Map<string, Set<string>>()
 
@@ -20,6 +20,8 @@ export async function someStates(
 
   statesSet.add(currentState)
 
+  const clevertap = await getCleverTap(ctx)
+
   const eventMap: Record<string, (id: string) => void> = {
     cancel: id =>
       clevertap.upload([
@@ -27,9 +29,7 @@ export async function someStates(
           type: 'event',
           objectId: id,
           evtName: 'Order Cancelled',
-          evtData: {
-            orderId: id,
-          },
+          evtData: { orderId: id },
         },
       ]),
     'payment-approved': id =>
@@ -38,18 +38,14 @@ export async function someStates(
           type: 'event',
           objectId: id,
           evtName: 'Order Paid',
-          evtData: {
-            orderId: id,
-          },
+          evtData: { orderId: id },
         },
       ]),
   }
 
   const handler = eventMap[currentState]
 
-  if (handler) {
-    handler(orderId)
-  }
+  if (handler) handler(orderId)
 
   await next()
 }

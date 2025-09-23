@@ -13,7 +13,7 @@
     "@vtex/test-tools": "^3.1.0",
     "apollo-cache-inmemory": "^1.6.5",
     "apollo-client": "^2.6.8",
-    "clevertappartnerbr.vtex-clevertap-app": "https://arthurrod--clevertappartnerbr.myvtex.com/_v/private/typings/linked/v1/clevertappartnerbr.vtex-clevertap-app@0.0.7+build1758290580/public/@types/clevertappartnerbr.vtex-clevertap-app",
+    "clevertappartnerbr.vtex-clevertap-app": "http://clevertappartnerbr.vtexassets.com/_v/public/typings/v1/clevertappartnerbr.vtex-clevertap-app@0.0.10/public/@types/clevertappartnerbr.vtex-clevertap-app",
     "graphql": "^14.5.4",
     "react-intl": "^3.11.0",
     "typescript": "3.9.7",
