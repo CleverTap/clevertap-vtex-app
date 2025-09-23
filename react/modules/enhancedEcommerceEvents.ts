@@ -71,22 +71,11 @@ export function sendEnhancedEcommerceEvents(e: PixelMessage) {
       break
     }
 
-    // Checkout Failed (pending)
-
-    // Order Paid (pending)
-
-    // Order Updated (pending)
-
-    // Charged (pending)
-
     case 'vtex:orderPlaced': {
       orderPlaced(e.data)
 
       break
     }
-
-    // Order Cancelled (pending)
-    // vtex:refund
 
     case 'vtex:addToWishlist': {
       addToWishlist(e.data)
@@ -105,10 +94,6 @@ export function sendEnhancedEcommerceEvents(e: PixelMessage) {
 
       break
     }
-
-    // Cart Shared (pending)
-
-    // Product Reviewed (pending)
 
     default:
       break
