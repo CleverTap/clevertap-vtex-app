@@ -1,13 +1,29 @@
+import { CLEVERTAP_REGIONS } from '../consts/clevertap'
+import { getConfig } from '../middlewares/getConfig'
+
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const CleverTap = require('clevertap')
 
-const accountID = '867-848-W57Z'
-const accountPasscode = '2f80009b-a468-4ed4-9cdc-2e8b549ec0a0'
+export async function getCleverTap(ctx: any) {
+  const settings = await getConfig(ctx)
 
-const clevertap = CleverTap.init(
-  accountID,
-  accountPasscode,
-  CleverTap.REGIONS.US
-)
+  if (!settings?.accountID || !settings?.accountPasscode || !settings?.region) {
+    throw new Error('CleverTap settings not configured')
+  }
 
-export default clevertap
+  const region = getRegion(settings.region)
+
+  return CleverTap.init(settings.accountID, settings.accountPasscode, region)
+}
+
+function getRegion(region: string) {
+  const entry = Object.entries(CLEVERTAP_REGIONS).find(
+    ([, value]) => value === region
+  )
+
+  if (!entry) {
+    throw new Error(`Invalid CleverTap region: ${region}`)
+  }
+
+  return entry[1]
+}

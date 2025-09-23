@@ -1978,6 +1978,10 @@ clevertap-web-sdk@^2.2.2:
   dependencies:
     crypto-js "^4.2.0"
 
+"clevertappartnerbr.vtex-clevertap-app@http://clevertappartnerbr.vtexassets.com/_v/public/typings/v1/clevertappartnerbr.vtex-clevertap-app@0.0.10/public/@types/clevertappartnerbr.vtex-clevertap-app":
+  version "0.0.0"
+  resolved "http://clevertappartnerbr.vtexassets.com/_v/public/typings/v1/clevertappartnerbr.vtex-clevertap-app@0.0.10/public/@types/clevertappartnerbr.vtex-clevertap-app#718caeff65a9cd2bfbdb5300ef5dfc36b0d54232"
+
 cliui@^5.0.0:
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/cliui/-/cliui-5.0.0.tgz#deefcfdb2e800784aa34f46fa08e06851c7bbbc5"
