@@ -1,7 +1,7 @@
 {
   "name": "vtex-clevertap-app",
   "vendor": "clevertappartnerbr",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "title": "VTEX CleverTap pixel app",
   "description": "VTEX app para integração com CleverTap, permitindo envio de eventos e campanhas.",
   "billingOptions": {
@@ -29,9 +29,54 @@
     {
       "name": "outbound-access",
       "attrs": {
+        "host": "eu1.api.clevertap.com",
+        "path": "/*"
+      }
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "in1.api.clevertap.com",
+        "path": "/*"
+      }
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "sg1.api.clevertap.com",
+        "path": "/*"
+      }
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
         "host": "us1.api.clevertap.com",
         "path": "/*"
       }
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "aps3.api.clevertap.com",
+        "path": "/*"
+      }
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "mec1.api.clevertap.com",
+        "path": "/*"
+      }
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "portal.vtexcommercestable.com.br",
+        "path": "/api/oms/pvt/orders/*"
+      }
+    },
+    {
+      "name": "OMSViewer"
     },
     {
       "name": "colossus-fire-event"
