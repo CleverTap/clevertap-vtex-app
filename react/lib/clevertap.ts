@@ -56,17 +56,16 @@ export async function initClevertapProfile(): Promise<boolean> {
 }
 
 export function initClevertapNotifications() {
-  // clevertap.notifications.push({
-  //   titleText: 'Would you like to receive Push Notifications?',
-  //   bodyText:
-  //     'We promise to only send you relevant content and give you updates on your transactions',
-  //   okButtonText: 'Sign me up!',
-  //   rejectButtonText: 'No thanks',
-  //   okButtonColor: '#F28046',
-  //   askAgainTimeInSeconds: 5,
-  //   serviceWorkerPath:
-  //     'https://clevertappartnerbr.vteximg.com.br/arquivos/service-worker.js',
-  // })
+  clevertap.notifications.push({
+    titleText: 'Would you like to receive Push Notifications?',
+    bodyText:
+      'We promise to only send you relevant content and give you updates on your transactions',
+    okButtonText: 'Sign me up!',
+    rejectButtonText: 'No thanks',
+    okButtonColor: '#F28046',
+    askAgainTimeInSeconds: 5,
+    serviceWorkerPath: '/serviceWorkerMerged.js',
+  })
 }
 
 async function fetchProfileSession(): Promise<CleverTapProfile | null> {
