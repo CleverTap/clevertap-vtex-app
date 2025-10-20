@@ -1,11 +1,13 @@
-import { getCleverTap } from '../lib/clevertap'
-import { getPaymentMethodsString } from '../utils/get-payment-method'
-import { getTotal } from '../utils/get-total'
-import { normalizeItems } from '../utils/normalize-items'
+import type { UploadData } from 'clevertap'
+
+import { getCleverTap } from '../../lib/clevertap'
+import { getPaymentMethodsString } from '../../utils/get-payment-method'
+import { getTotal } from '../../utils/get-total'
+import { normalizeItems } from '../../utils/normalize-items'
 
 const processedOrders = new Map<string, Set<string>>()
 
-export async function someStates(
+export async function omsFilteredEvents(
   ctx: StatusChangeContext,
   next: () => Promise<any>
 ) {
@@ -70,7 +72,7 @@ export async function someStates(
       objectId: 'back-end-event',
       evtName: event.name,
       evtData,
-    }
+    } as UploadData
 
     clevertap.upload([data])
   }

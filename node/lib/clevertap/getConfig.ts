@@ -1,4 +1,4 @@
-export const getConfig = async (ctx: any) => {
+export const getConfig = async (ctx: Context) => {
   const {
     clients: { apps },
     vtex: { logger },

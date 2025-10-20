@@ -1,8 +1,10 @@
-import { getCleverTap } from '../lib/clevertap'
-import { getPaymentMethodsString } from '../utils/get-payment-method'
-import { getTotal } from '../utils/get-total'
+import type { UploadData } from 'clevertap'
 
-export async function allStates(
+import { getCleverTap } from '../../lib/clevertap'
+import { getPaymentMethodsString } from '../../utils/get-payment-method'
+import { getTotal } from '../../utils/get-total'
+
+export async function omsAllEvents(
   ctx: StatusChangeContext,
   next: () => Promise<any>
 ) {
@@ -42,7 +44,7 @@ export async function allStates(
     objectId: 'back-end-event',
     evtName: 'Order Updated',
     evtData: payload,
-  }
+  } as UploadData
 
   clevertap.upload([data])
 

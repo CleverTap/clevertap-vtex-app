@@ -1,9 +1,9 @@
 {
   "name": "vtex-clevertap-app",
   "vendor": "clevertappartnerbr",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "title": "VTEX CleverTap pixel app",
-  "description": "VTEX app para integração com CleverTap, permitindo envio de eventos e campanhas.",
+  "description": "VTEX app for CleverTap integration, enabling event tracking, campaign management, and catalog synchronization with CleverTap.",
   "billingOptions": {
     "termsURL": "https://compliance.vtex.com/gdpr/policies/vtex-privacy-policy",
     "support": {
@@ -71,8 +71,22 @@
     {
       "name": "outbound-access",
       "attrs": {
+        "host": "us1-sharedresources-platformstorages3bucket-7uuj7y1r2ute.s3.us-west-2.amazonaws.com",
+        "path": "/*"
+      }
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
         "host": "portal.vtexcommercestable.com.br",
         "path": "/api/oms/pvt/orders/*"
+      }
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "portal.vtexcommercestable.com.br",
+        "path": "/api/catalog_system/pvt/sku/*"
       }
     },
     {
@@ -86,23 +100,83 @@
     }
   ],
   "settingsSchema": {
-    "title": "VTEX CleverTap pixel app",
+    "title": "VTEX CleverTap Pixel App",
     "type": "object",
     "properties": {
       "accountID": {
-        "title": "Project ID",
-        "description": "Enter a value",
-        "type": "string"
+        "title": "CleverTap Project ID",
+        "description": "Enter the Project ID of your CleverTap account.",
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 12
       },
       "accountPasscode": {
-        "title": "Account passcode",
-        "description": "Enter a value",
-        "type": "string"
+        "title": "CleverTap Account Passcode",
+        "description": "Provide the authentication passcode for your CleverTap account.",
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 50
       },
       "region": {
-        "title": "Region",
-        "description": "Enter a value",
-        "type": "string"
+        "title": "CleverTap Region",
+        "description": "Specify the CleverTap account region (e.g., us1, in1, sg1).",
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 4
+      },
+      "preferences": {
+        "title": "Preference Settings",
+        "type": "object",
+        "properties": {
+          "allowUnknownUsersEvents": {
+            "title": "Allow Events from Unknown Users",
+            "description": "Enable this option to track events even when the user is not identified.",
+            "default": true,
+            "type": "boolean"
+          },
+          "trackEvents": {
+            "title": "Track Events",
+            "description": "Enable or disable specific events to be tracked in your store.",
+            "type": "object",
+            "properties": {
+              "vtex:login": {
+                "title": "Login",
+                "type": "boolean",
+                "default": true
+              },
+              "vtex:viewCart": {
+                "title": "View Cart",
+                "type": "boolean",
+                "default": true
+              },
+              "vtex:addToCart": {
+                "title": "Add to Cart",
+                "type": "boolean",
+                "default": true
+              },
+              "vtex:removeFromCart": {
+                "title": "Remove from Cart",
+                "type": "boolean",
+                "default": true
+              },
+              "vtex:orderPlaced": {
+                "title": "Order Placed",
+                "type": "boolean",
+                "default": true
+              },
+              "vtex:productView": {
+                "title": "Product View",
+                "type": "boolean",
+                "default": true
+              },
+              "vtex:search": {
+                "title": "Search",
+                "type": "boolean",
+                "default": true
+              }
+            }
+          }
+        }
       }
     }
   },

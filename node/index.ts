@@ -1,14 +1,15 @@
 import type {
   ClientsConfig,
-  ServiceContext,
-  RecorderState,
   EventContext,
+  RecorderState,
+  ServiceContext,
 } from '@vtex/api'
 import { LRUCache, Service } from '@vtex/api'
 
 import { Clients } from './clients'
-import { allStates } from './middlewares/allStates'
-import { someStates } from './middlewares/someStates'
+import { omsAllEvents } from './middlewares/oms/omsAllEvents'
+import { omsFilteredEvents } from './middlewares/oms/omsFilteredEvents'
+import { catalogRoutes } from './routes/catalog'
 
 const TIMEOUT_MS = 800
 
@@ -57,7 +58,10 @@ declare global {
 export default new Service({
   clients,
   events: {
-    allStates,
-    someStates,
+    omsAllEvents,
+    omsFilteredEvents,
+  },
+  routes: {
+    ...catalogRoutes,
   },
 })

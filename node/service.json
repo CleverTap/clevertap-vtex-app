@@ -6,13 +6,20 @@
   "maxReplicas": 4,
   "workers": 1,
   "events": {
-    "allStates": {
+    "omsAllEvents": {
       "sender": "vtex.orders-broadcast",
       "topics": ["order-status-updated"]
     },
-    "someStates": {
+    "omsFilteredEvents": {
       "sender": "vtex.orders-broadcast",
-      "topics": ["cancel", "payment-approved"]
+      "topics": ["canceled", "payment-approved", "incomplete", "payment-denied"]
+    }
+  },
+  "routes": {
+    "catalogSync": {
+      "path": "/_v/catalog/sync",
+      "public": true,
+      "method": "POST"
     }
   }
 }
