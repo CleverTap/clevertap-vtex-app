@@ -1,8 +1,7 @@
-import { CLEVERTAP_REGIONS } from '../consts/clevertap'
-import { getConfig } from '../middlewares/getConfig'
+import * as clevertap from 'clevertap'
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const CleverTap = require('clevertap')
+import { CLEVERTAP_REGIONS } from '../../consts/clevertap'
+import { getConfig } from './getConfig'
 
 export async function getCleverTap(ctx: any) {
   const settings = await getConfig(ctx)
@@ -13,7 +12,11 @@ export async function getCleverTap(ctx: any) {
 
   const region = getRegion(settings.region)
 
-  return CleverTap.init(settings.accountID, settings.accountPasscode, region)
+  return clevertap.init(
+    settings.accountID,
+    settings.accountPasscode,
+    region as clevertap.REGIONS
+  )
 }
 
 function getRegion(region: string) {
