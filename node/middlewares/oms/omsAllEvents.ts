@@ -1,15 +1,17 @@
 import type { UploadData } from 'clevertap'
 
-import { getCleverTap } from '../../lib/clevertap'
 import { getPaymentMethodsString } from '../../utils/get-payment-method'
 import { getTotal } from '../../utils/get-total'
+import { getCleverTap } from '../../lib/clevertap'
+
+type MdUser = { email: string }
 
 export async function omsAllEvents(
   ctx: StatusChangeContext,
   next: () => Promise<any>
 ) {
   const {
-    clients: { oms: omsClient },
+    clients: { oms: omsClient, MD: mdClient },
     body,
   } = ctx
 
@@ -39,7 +41,19 @@ export async function omsAllEvents(
     coupon: response.marketingData?.coupon || '',
   }
 
+  const { userProfileId } = response.clientProfileData
+
+  const mdResponse: MdUser[] = await mdClient.searchDocuments({
+    dataEntity: 'CL',
+    fields: ['email'],
+    where: `userId=${userProfileId}`,
+    pagination: { page: 1, pageSize: 1 },
+  })
+
+  const identity = mdResponse[0].email || ''
+
   const data = {
+    identity,
     type: 'event',
     objectId: 'back-end-event',
     evtName: 'Order Updated',
