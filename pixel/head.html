@@ -2,6 +2,8 @@
   ;(function () {
     let accountID = '{{settings.accountID}}'
     let region = '{{settings.region}}'
+    let rawPrefs = '{{settings.preferences}}'
+    let preferences = {}
 
     if (!accountID || !region) {
       console.error(
@@ -10,11 +12,25 @@
       return
     }
 
+    try {
+      preferences = JSON.parse(decodeURIComponent(rawPrefs))
+    } catch (e) {
+      console.error('Failed to parse preferences:', e)
+      return
+    }
+
+    const { allowUnknownUsersEvents, trackEvents } = preferences
+
     const clevertapConfigs = {
-      accountID: accountID,
-      region: region,
+      accountID,
+      region,
+      isLogged: false,
       privacy: { optOut: false, useIP: false },
       spa: true,
+      preferences: {
+        allowUnknownUsersEvents,
+        trackEvents,
+      },
     }
 
     try {
