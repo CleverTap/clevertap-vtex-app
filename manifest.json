@@ -1,7 +1,7 @@
 {
   "name": "vtex-clevertap-app",
   "vendor": "clevertappartnerbr",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "title": "VTEX CleverTap pixel app",
   "description": "VTEX app for CleverTap integration, enabling event tracking, campaign management, and catalog synchronization with CleverTap.",
   "billingOptions": {
@@ -93,6 +93,16 @@
       "name": "OMSViewer"
     },
     {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "api.vtex.com",
+        "path": "/dataentities/*"
+      }
+    },
+    {
+      "name": "ADMIN_DS"
+    },
+    {
       "name": "colossus-fire-event"
     },
     {
@@ -139,38 +149,113 @@
             "description": "Enable or disable specific events to be tracked in your store.",
             "type": "object",
             "properties": {
-              "vtex:login": {
-                "title": "Login",
+              "vtex:search": {
+                "title": "Products Searched",
                 "type": "boolean",
                 "default": true
               },
-              "vtex:viewCart": {
-                "title": "View Cart",
+              "vtex:filterManipulation": {
+                "title": "Product Filtered By Category",
                 "type": "boolean",
                 "default": true
               },
-              "vtex:addToCart": {
-                "title": "Add to Cart",
+              "categoryView": {
+                "title": "Product List Viewed",
                 "type": "boolean",
                 "default": true
               },
-              "vtex:removeFromCart": {
-                "title": "Remove from Cart",
+              "vtex:promoView": {
+                "title": "Promotion Viewed",
                 "type": "boolean",
                 "default": true
               },
-              "vtex:orderPlaced": {
-                "title": "Order Placed",
+              "vtex:promotionClick": {
+                "title": "Promotion Clicked",
                 "type": "boolean",
                 "default": true
               },
               "vtex:productView": {
-                "title": "Product View",
+                "title": "Product Viewed",
                 "type": "boolean",
                 "default": true
               },
-              "vtex:search": {
-                "title": "Search",
+              "vtex:productClick": {
+                "title": "Product Clicked",
+                "type": "boolean",
+                "default": true
+              },
+              "vtex:addToCart": {
+                "title": "Product Added To Cart",
+                "type": "boolean",
+                "default": true
+              },
+              "vtex:removeFromCart": {
+                "title": "Product Removed From Cart",
+                "type": "boolean",
+                "default": true
+              },
+              "vtex:viewCart": {
+                "title": "Cart Viewed",
+                "type": "boolean",
+                "default": true
+              },
+              "vtex:addToWishlist": {
+                "title": "Product Added to Wishlist",
+                "type": "boolean",
+                "default": true
+              },
+              "vtex:removeToWishlist": {
+                "title": "Product Removed from Wishlist",
+                "type": "boolean",
+                "default": true
+              },
+              "vtex:share": {
+                "title": "Product Shared",
+                "type": "boolean",
+                "default": true
+              },
+              "vtex:orderPlaced": {
+                "title": "Order Created",
+                "type": "boolean",
+                "default": true
+              },
+              "add_to_cart": {
+                "title": "Checkout Product Added To Cart",
+                "type": "boolean",
+                "default": true
+              },
+              "remove_from_cart": {
+                "title": "Checkout Product Removed From Cart",
+                "type": "boolean",
+                "default": true
+              },
+              "view_cart": {
+                "title": "Checkout Cart Viewed",
+                "type": "boolean",
+                "default": true
+              },
+              "begin_checkout": {
+                "title": "Checkout Started",
+                "type": "boolean",
+                "default": true
+              },
+              "add_payment_info": {
+                "title": "Payment info",
+                "type": "boolean",
+                "default": true
+              },
+              "checkout_step_viewed": {
+                "title": "Checkout Step Viewed/Completed",
+                "type": "boolean",
+                "default": true
+              },
+              "coupon_applied": {
+                "title": "Coupon Applied",
+                "type": "boolean",
+                "default": true
+              },
+              "coupon_denied": {
+                "title": "Coupon Denied",
                 "type": "boolean",
                 "default": true
               }
