@@ -18,6 +18,7 @@ import type {
   SearchPageInfoData,
   ShareData,
   SignUpData,
+  UserData,
   ViewCartData,
 } from '../typings/events'
 import {
@@ -29,6 +30,27 @@ import {
   getQuantity,
   getSeller,
 } from './utils'
+import { initClevertapProfile, verifyIsLogged } from '../lib/clevertap'
+
+export async function signIn(eventData: UserData) {
+  const { isAuthenticated } = eventData
+  const isLogged = verifyIsLogged()
+
+  if (isAuthenticated && !isLogged) {
+    await initClevertapProfile()
+
+    try {
+      const savedConfig = localStorage.getItem('clevertapConfigs')
+      const config = savedConfig ? JSON.parse(savedConfig) : {}
+
+      config.isLogged = true
+
+      localStorage.setItem('clevertapConfigs', JSON.stringify(config))
+    } catch (e) {
+      console.error('CleverTap: failed to update isLogged in localStorage', e)
+    }
+  }
+}
 
 export function signUp(eventData: SignUpData) {
   const eventName = 'Signing Up'

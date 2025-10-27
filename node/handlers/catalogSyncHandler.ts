@@ -9,7 +9,6 @@ export async function catalogSyncHandler(ctx: Context) {
 
   const service = new CatalogService(ctx)
 
-  // se der erro → errorHandler captura
   await service.syncCatalog(ctx, {
     accountName: account,
     email,

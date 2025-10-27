@@ -29,6 +29,75 @@ export function initCleverTap() {
   return clevertap
 }
 
+export function verifyEvent(eventName: string) {
+  const savedConfig = localStorage.getItem('clevertapConfigs')
+  let config = null
+
+  if (savedConfig) {
+    try {
+      config = JSON.parse(savedConfig)
+    } catch (e) {
+      console.error('CleverTap: failed to parse config from localStorage', e)
+    }
+  }
+
+  if (!config || !config.preferences || !config.preferences.trackEvents) {
+    console.error('CleverTap: no valid configuration found.')
+
+    return false
+  }
+
+  const { trackEvents } = config.preferences
+
+  return !!trackEvents[eventName]
+}
+
+export function verifyIsUnknownEvents() {
+  const savedConfig = localStorage.getItem('clevertapConfigs')
+  let config = null
+
+  if (savedConfig) {
+    try {
+      config = JSON.parse(savedConfig)
+    } catch (e) {
+      console.error('CleverTap: failed to parse config from localStorage', e)
+    }
+  }
+
+  if (
+    !config ||
+    !config.preferences ||
+    !config.preferences.allowUnknownUsersEvents
+  ) {
+    return false
+  }
+
+  const { allowUnknownUsersEvents } = config.preferences
+
+  return allowUnknownUsersEvents
+}
+
+export function verifyIsLogged() {
+  const savedConfig = localStorage.getItem('clevertapConfigs')
+  let config = null
+
+  if (savedConfig) {
+    try {
+      config = JSON.parse(savedConfig)
+    } catch (e) {
+      console.error('CleverTap: failed to parse config from localStorage', e)
+    }
+  }
+
+  if (!config || !config.isLogged) {
+    return false
+  }
+
+  const { isLogged } = config
+
+  return isLogged
+}
+
 export async function initClevertapProfile(): Promise<boolean> {
   try {
     const profile = await fetchProfileSession()

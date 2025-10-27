@@ -1,3 +1,8 @@
+import {
+  verifyEvent,
+  verifyIsLogged,
+  verifyIsUnknownEvents,
+} from '../lib/clevertap'
 import type { PixelMessage } from '../typings/events'
 import {
   addToCart,
@@ -12,85 +17,199 @@ import {
   removeToWishlist,
   search,
   share,
+  signIn,
   viewCart,
 } from './manageEvents'
 
-export function sendEnhancedEcommerceEvents(e: PixelMessage) {
+export async function sendEnhancedEcommerceEvents(e: PixelMessage) {
   switch (e.data.eventName) {
+    case 'vtex:userData': {
+      signIn(e.data)
+
+      break
+    }
+
     case 'vtex:search': {
-      search(e.data)
+      // Delay required to ensure the vtex:userData event is trigered
+      await new Promise(resolve => setTimeout(resolve, 500))
+
+      const isUnknownEvents = verifyIsUnknownEvents()
+      const isLogged = verifyIsLogged()
+
+      if (!isUnknownEvents && !isLogged) return
+
+      if (verifyEvent('vtex:search')) search(e.data)
 
       break
     }
 
     case 'vtex:filterManipulation': {
-      filterManipulation(e.data)
+      // Delay required to ensure the vtex:userData event is trigered
+      await new Promise(resolve => setTimeout(resolve, 500))
+
+      // Delay required to ensure the vtex:userData event is trigered
+      await new Promise(resolve => setTimeout(resolve, 500))
+
+      const isUnknownEvents = verifyIsUnknownEvents()
+      const isLogged = verifyIsLogged()
+
+      if (!isUnknownEvents && !isLogged) return
+
+      if (verifyEvent('vtex:filterManipulation')) filterManipulation(e.data)
 
       break
     }
 
     case 'vtex:promoView': {
-      promoView(e.data)
+      // Delay required to ensure the vtex:userData event is trigered
+      await new Promise(resolve => setTimeout(resolve, 500))
+
+      const isUnknownEvents = verifyIsUnknownEvents()
+      const isLogged = verifyIsLogged()
+
+      if (!isUnknownEvents && !isLogged) return
+
+      if (verifyEvent('vtex:promoView')) promoView(e.data)
 
       break
     }
 
     case 'vtex:promotionClick': {
-      promotionClick(e.data)
+      // Delay required to ensure the vtex:userData event is trigered
+      await new Promise(resolve => setTimeout(resolve, 500))
+
+      const isUnknownEvents = verifyIsUnknownEvents()
+      const isLogged = verifyIsLogged()
+
+      if (!isUnknownEvents && !isLogged) return
+
+      if (verifyEvent('vtex:promotionClick')) promotionClick(e.data)
 
       break
     }
 
     case 'vtex:productClick': {
-      productClick(e.data)
+      // Delay required to ensure the vtex:userData event is trigered
+      await new Promise(resolve => setTimeout(resolve, 500))
+
+      const isUnknownEvents = verifyIsUnknownEvents()
+      const isLogged = verifyIsLogged()
+
+      if (!isUnknownEvents && !isLogged) return
+
+      if (verifyEvent('vtex:productClick')) productClick(e.data)
 
       break
     }
 
     case 'vtex:productView': {
-      productView(e.data)
+      // Delay required to ensure the vtex:userData event is trigered
+      await new Promise(resolve => setTimeout(resolve, 500))
+
+      const isUnknownEvents = verifyIsUnknownEvents()
+      const isLogged = verifyIsLogged()
+
+      if (!isUnknownEvents && !isLogged) return
+
+      if (verifyEvent('vtex:productView')) productView(e.data)
 
       break
     }
 
     case 'vtex:addToCart': {
-      addToCart(e.data)
+      // Delay required to ensure the vtex:userData event is trigered
+      await new Promise(resolve => setTimeout(resolve, 500))
+
+      const isUnknownEvents = verifyIsUnknownEvents()
+      const isLogged = verifyIsLogged()
+
+      if (!isUnknownEvents && !isLogged) return
+
+      if (verifyEvent('vtex:addToCart')) addToCart(e.data)
 
       break
     }
 
     case 'vtex:removeFromCart': {
-      removeFromCart(e.data)
+      // Delay required to ensure the vtex:userData event is trigered
+      await new Promise(resolve => setTimeout(resolve, 500))
+
+      const isUnknownEvents = verifyIsUnknownEvents()
+      const isLogged = verifyIsLogged()
+
+      if (!isUnknownEvents && !isLogged) return
+
+      if (verifyEvent('vtex:removeFromCart')) removeFromCart(e.data)
 
       break
     }
 
     case 'vtex:viewCart': {
-      viewCart(e.data)
+      // Delay required to ensure the vtex:userData event is trigered
+      await new Promise(resolve => setTimeout(resolve, 500))
+
+      const isUnknownEvents = verifyIsUnknownEvents()
+      const isLogged = verifyIsLogged()
+
+      if (!isUnknownEvents && !isLogged) return
+
+      if (verifyEvent('vtex:viewCart')) viewCart(e.data)
 
       break
     }
 
     case 'vtex:orderPlaced': {
-      orderPlaced(e.data)
+      // Delay required to ensure the vtex:userData event is trigered
+      await new Promise(resolve => setTimeout(resolve, 500))
+
+      const isUnknownEvents = verifyIsUnknownEvents()
+      const isLogged = verifyIsLogged()
+
+      if (!isUnknownEvents && !isLogged) return
+
+      if (verifyEvent('vtex:orderPlaced')) orderPlaced(e.data)
 
       break
     }
 
     case 'vtex:addToWishlist': {
-      addToWishlist(e.data)
+      // Delay required to ensure the vtex:userData event is trigered
+      await new Promise(resolve => setTimeout(resolve, 500))
+
+      const isUnknownEvents = verifyIsUnknownEvents()
+      const isLogged = verifyIsLogged()
+
+      if (!isUnknownEvents && !isLogged) return
+
+      if (verifyEvent('vtex:addToWishlist')) addToWishlist(e.data)
 
       break
     }
 
     case 'vtex:removeToWishlist': {
-      removeToWishlist(e.data)
+      // Delay required to ensure the vtex:userData event is trigered
+      await new Promise(resolve => setTimeout(resolve, 500))
+
+      const isUnknownEvents = verifyIsUnknownEvents()
+      const isLogged = verifyIsLogged()
+
+      if (!isUnknownEvents && !isLogged) return
+
+      if (verifyEvent('vtex:removeToWishlist')) removeToWishlist(e.data)
 
       break
     }
 
     case 'vtex:share': {
-      share(e.data)
+      // Delay required to ensure the vtex:userData event is trigered
+      await new Promise(resolve => setTimeout(resolve, 500))
+
+      const isUnknownEvents = verifyIsUnknownEvents()
+      const isLogged = verifyIsLogged()
+
+      if (!isUnknownEvents && !isLogged) return
+
+      if (verifyEvent('vtex:share')) share(e.data)
 
       break
     }

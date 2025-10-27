@@ -1,10 +1,8 @@
 import jwtDecode from 'jwt-decode'
 
-import { initClevertapProfile } from '../lib/clevertap'
 import { signUp } from './manageEvents'
 
 let loginEventSent = false
-let userProfileCreated = false
 
 export function sendRequestEvents() {
   const originalFetch = window.fetch
@@ -14,20 +12,8 @@ export function sendRequestEvents() {
 
     try {
       const url = (args[0] as any)?.url || args[0]
-      const method = (args[1] as any)?.method ?? 'GET'
 
-      // Inicializa profile CleverTap após PATCH
-      if (
-        !userProfileCreated &&
-        url.includes('/api/sessions') &&
-        method === 'PATCH'
-      ) {
-        const success = await initClevertapProfile()
-
-        if (success) userProfileCreated = true
-      }
-
-      // Envia evento de login
+      // Envia evento de cadastro
       if (
         !loginEventSent &&
         url.includes('/api/vtexid/pub/authentication/classic/validate')
