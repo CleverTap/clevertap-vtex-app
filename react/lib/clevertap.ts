@@ -132,7 +132,6 @@ export function initClevertapNotifications() {
     okButtonText: 'Sign me up!',
     rejectButtonText: 'No thanks',
     okButtonColor: '#F28046',
-    askAgainTimeInSeconds: 5,
     serviceWorkerPath: '/serviceWorkerMerged.js',
   })
 }
