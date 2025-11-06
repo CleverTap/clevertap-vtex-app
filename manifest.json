@@ -1,7 +1,7 @@
 {
   "name": "vtex-clevertap-app",
   "vendor": "clevertappartnerbr",
-  "version": "0.0.16",
+  "version": "0.0.20",
   "title": "VTEX CleverTap pixel app",
   "description": "VTEX app for CleverTap integration, enabling event tracking, campaign management, and catalog synchronization with CleverTap.",
   "billingOptions": {
@@ -107,6 +107,12 @@
     },
     {
       "name": "colossus-write-logs"
+    },
+    {
+      "name": "read-workspace-apps"
+    },
+    {
+      "name": "vbase-read-write"
     }
   ],
   "settingsSchema": {
@@ -267,12 +273,12 @@
             "default": true,
             "type": "boolean"
           },
-          "lastCatalogSync": {
-            "title": "Last Catalog Sync",
-            "description": "Shows the date and time of the last catalog sync.",
-            "default": "1970-01-01T00:00:00.000Z",
+          "integrationEmail": {
+            "title": "Integration Email",
+            "description": "Email address used for catalog integration",
+            "minLength": 1,
             "type": "string",
-            "format": "date-time"
+            "format": "email"
           }
         }
       }
