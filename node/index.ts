@@ -7,9 +7,7 @@ import type {
 import { LRUCache, Service } from '@vtex/api'
 
 import { Clients } from './clients'
-import { omsAllEvents } from './middlewares/oms/omsAllEvents'
 import { omsFilteredEvents } from './middlewares/oms/omsFilteredEvents'
-import { catalogRoutes } from './routes/catalog'
 
 const TIMEOUT_MS = 800
 
@@ -58,10 +56,11 @@ declare global {
 export default new Service({
   clients,
   events: {
-    omsAllEvents,
     omsFilteredEvents,
   },
-  routes: {
-    ...catalogRoutes,
-  },
+  // For testing only:
+  // To enable this, add the "catalogSync" route to your service.json with the POST method.
+  // routes: {
+  //   ...catalogRoutes,
+  // },
 })

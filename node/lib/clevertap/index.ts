@@ -3,7 +3,7 @@ import * as clevertap from 'clevertap'
 import { CLEVERTAP_REGIONS } from '../../consts/clevertap'
 import { getConfig } from './getConfig'
 
-export async function getCleverTap(ctx: any) {
+export async function getCleverTap(ctx: Context | StatusChangeContext) {
   const settings = await getConfig(ctx)
 
   if (!settings?.accountID || !settings?.accountPasscode || !settings?.region) {

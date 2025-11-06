@@ -56,8 +56,6 @@ export class CatalogService {
     let pageSkuIds: number[] = []
 
     do {
-      console.info(`Page: ${page}`)
-
       pageSkuIds = await this.vtexCatalogClient.getSKUIds(page, this.pageSize)
 
       if (!pageSkuIds?.length) break
@@ -77,8 +75,6 @@ export class CatalogService {
         const skuData = await this.vtexCatalogClient.getSKUAndContext(skuId)
 
         if (!skuData.IsActive) {
-          console.info(`SKU ${skuId}: inactive`)
-
           continue
         }
 

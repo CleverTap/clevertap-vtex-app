@@ -1,7 +1,6 @@
-export const getConfig = async (ctx: Context) => {
+export const getConfig = async (ctx: Context | StatusChangeContext) => {
   const {
     clients: { apps },
-    vtex: { logger },
   } = ctx
 
   const appId = process.env.VTEX_APP_ID
@@ -15,9 +14,6 @@ export const getConfig = async (ctx: Context) => {
 
     return settings
   } catch (error) {
-    logger.error({
-      message: 'getConfig-getAppSettings-error',
-      error,
-    })
+    console.error(error)
   }
 }
