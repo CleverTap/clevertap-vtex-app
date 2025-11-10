@@ -1,66 +1,287 @@
-📢 Use this project, [contribute](https://github.com/vtex-apps/CHANGEME) to it or open issues to help evolve it using [Store Discussion](https://github.com/vtex-apps/store-discussion).
+# Overview
 
-# VTEX CleverTap Pixel App
+The **VTEX CleverTap pixel app** provides a seamless way to connect your VTEX store to CleverTap in just a few minutes. Once connected, the app automatically tracks user and ecommerce events (such as product views, cart actions, and purchases) and sends them to CleverTap — enabling powerful segmentation, personalization, and campaign automation.
 
-<!-- DOCS-IGNORE:start -->
-<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-0-orange.svg?style=flat-square)](#contributors-)
-<!-- ALL-CONTRIBUTORS-BADGE:END -->
-<!-- DOCS-IGNORE:end -->
+With this integration, you can:
 
-The **VTEX CleverTap Pixel App** is a VTEX IO app that integrates CleverTap tracking into your store. It enables the tracking of user behavior, checkout steps, order lifecycle events, wishlist interactions, promotions, and more. This helps marketing teams better understand customer behavior and improve engagement through personalized messaging and analytics.
-
-Next, you can **see a visual example** of how the app works in practice:  
-
-![CleverTap Pixel App Overview](./images/1.png)
+- Capture real-time events and user activity from VTEX.
+- Analyze user journeys directly within the CleverTap dashboard.
+- Send personalized messages through [Web Push](https://docs.clevertap.com/docs/web-push), [Web Pop-ups](https://docs.clevertap.com/docs/web-pop-up), [Web Exit Intent](https://docs.clevertap.com/docs/web-exit-intent-overview), and [Web Native Display](https://docs.clevertap.com/docs/web-native-display).
 
 ---
 
-## Configuration
+# Integrate VTEX with CleverTap
 
-1. Install the app via VTEX IO:  
+The VTEX CleverTap pixel app can be installed directly from your VTEX Admin.
+After installation, you’ll enter your **CleverTap credentials** to start sending store data.
 
-```bash
-vtex install vtex-clevertap-app@0.x
+The integration process includes:
+
+1. [Install the CleverTap App](#1-install-the-vtex-clevertap-app)
+2. [Add Your CleverTap Credentials](#2-add-clevertap-credentials-in-vtex)
+3. [Insert Checkout Script (Required)](#3-insert-clevertap-checkout-script-required)
+4. [Verify Event Tracking](#4-verify-event-tracking)
+5. [Advanced Customization](#5-advanced-customization)
+6. [Use Cases: Cart Abandonment & Web Campaigns](#6-cart-abandonment-and-web-campaigns)
+
+---
+
+## 1. Install the VTEX CleverTap App
+
+You can install the app directly from your VTEX Admin.
+
+1. Log in to your VTEX Admin:
+   `https://{your-account}.myvtex.com/admin`
+2. Navigate to **Apps → App Store**.
+3. Search for **CleverTap Pixel App**.
+
+![Imagem admin](../docs/images/1.png)
+
+4. Click **Install** and confirm.
+
+Once the installation is complete, you'll see the app under **My Apps**.
+
+![Imagem admin](../docs/images/2.png)
+
+---
+
+## 2. Add CleverTap Credentials in VTEX
+
+After installing the app, you’ll configure it by entering your **CleverTap account details** inside VTEX — not the other way around.
+
+1. Go to **Apps → My Apps → VTEX CleverTap Pixel App**.
+2. Under **Settings**, fill in the following fields:
+
+| Field                          | Description                                                                                     |
+| ------------------------------ | ----------------------------------------------------------------------------------------------- |
+| **CleverTap Project ID**       | Found in your CleverTap dashboard under **Settings → Project → Details** (e.g., `867-848-W57Z`) |
+| **CleverTap Account Passcode** | The authentication key for your CleverTap account (found in the same Project settings)          |
+| **CleverTap Region**           | Your CleverTap account region (e.g., `us1`, `in1`, `sg1`)                                       |
+
+![Imagem admin](../docs/images/3.png)
+
+3. Under **Preference Settings**, you can choose whether to:
+
+   - **Allow Events from Unknown Users** – enables anonymous browsing event tracking.
+
+   - **Track Events**, select which events you’d like CleverTap to collect:
+
+     - Products Searched
+     - Product Filtered By Category
+     - Product List Viewed
+     - Promotion Viewed
+     - Promotion Clicked
+     - Product Viewed
+     - Product Clicked
+     - Product Added To Cart
+     - Product Removed From Cart
+     - Cart Viewed
+     - Product Added to Wishlist
+     - Product Removed from Wishlist
+     - Product Shared
+     - Order Created
+     - Checkout Product Added To Cart
+     - Checkout Product Removed From Cart
+     - Checkout Cart Viewed
+     - Checkout Started
+     - Payment info
+     - Checkout Step Viewed/Completed
+     - Coupon Applied
+     - Coupon Denied
+
+     > ✅ These are the same events CleverTap uses to power product analytics, cart abandonment, and funnel tracking.
+
+   - **Active Catalog Sync**, enable this option to automatically sync the Clevertap catalog every 24 hours. Once activated, adding an **Integration Email** becomes mandatory.
+
+   - **Integration Email**, email address used for catalog integration — this is the address where the synchronization results will be sent.
+
+4. Click **Save** to activate the configuration.
+
+![Imagem admin](../docs/images/4.png)
+
+Once saved, your VTEX store will automatically start sending events to CleverTap.
+
+---
+
+## 3. Insert CleverTap Checkout Script (Required)
+
+VTEX’s checkout operates independently from the storefront.
+To ensure CleverTap receives **checkout, order, and payment events**, you must add a small script tag to the Checkout configuration in VTEX.
+
+### Steps
+
+1. Go to your VTEX Admin:
+   `https://{your-account}.myvtex.com/admin`
+
+2. Navigate to:
+   **Store Settings → Checkout → Code → checkout6-custom.js**
+
+![Imagem admin](../docs/images/6.png)
+
+![Imagem admin](../docs/images/5.png)
+
+2.1 - In some VTEX Admin versions, this may appear under “Checkout UI Custom” **Store Settings → Checkout UI Custom → JavaScript**
+
+![Imagem admin](../docs/images/7.png)
+
+3. Insert the following script:
+
+```js
+;(function () {
+  // URL CDN jsDelivr
+  var scriptUrl =
+    'https://cdn.jsdelivr.net/gh/GuiGiesbrecht/vtex-clevertap-scripts/clevertap-checkout-events.js'
+
+  var script = document.createElement('script')
+  script.src = scriptUrl
+  script.type = 'text/javascript'
+  script.async = true
+
+  document.head.appendChild(script)
+})()
 ```
 
-2. Access the **Apps** section in your admin panel and open the **VTEX CleverTap pixel app**.  
-3. Enter your **Project ID** and **Region**.  
-4. Click **Save**.
+4. Save or publish the checkout configuration.
 
-![CleverTap Config App Overview](./images/2.png)
+![Imagem admin](../docs/images/8.png)
 
----
+OR
 
-## How it Works
-
-The app tracks events across multiple store activities
+![Imagem admin](../docs/images/9.png)
 
 ---
 
-## Event Summary
+### Why This Step is Crucial
 
-You can find a detailed [Event Summary Table](./events-summary.md) with all events, status, and missing fields.
+Without this script:
+
+- Checkout actions (Checkout Product Added To Cart, Checkout Product Removed From Cart, Checkout Cart Viewed, Checkout Started, Payment info, Checkout Step Viewed/Completed, Coupon Applied, Coupon Denied) will not be tracked.
+- Cart abandonment and conversion funnel analytics will be incomplete.
+
+Adding this script ensures CleverTap receives the full buying journey — from browse to checkout to purchase.
 
 ---
 
-## Contributing
+## 4. Verify Event Tracking
 
-If you want to contribute to this project, feel free to submit issues, feature requests, or pull requests.  
+To confirm that the integration is working:
 
-This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind are welcome!  
+1. Open your VTEX storefront and perform test actions (search, view product, add to cart, start checkout, complete order).
+2. Go to your CleverTap dashboard → **Events**.
+3. You should see events like:
 
-<!-- DOCS-IGNORE:start -->
-## Contributors ✨
+   - `Product Viewed`
+   - `Added to Cart`
+   - `Checkout Started`
+   - `Order Completed`
 
-Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+If events are missing:
 
-<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
-<!-- prettier-ignore-start -->
-<!-- markdownlint-disable -->
-<!-- markdownlint-enable -->
-<!-- prettier-ignore-end -->
-<!-- ALL-CONTRIBUTORS-LIST:END -->
+- Re-check that the **checkout script** is installed.
+- Make sure your VTEX account settings match your CleverTap credentials.
+- Clear VTEX workspace cache and reload.
 
-This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind are welcome!
-<!-- DOCS-IGNORE:end -->
+---
+
+## 5. Advanced Customization
+
+Once your store is connected, you can customize tracking and campaigns from CleverTap.
+
+### Configure Web Push
+
+1. In CleverTap, navigate to **Settings → Channels → Web Push**.
+2. Configure your domain and permission prompt.
+3. Enable “Send Notification Permission Prompt” to allow browser notifications.
+
+Once enabled, CleverTap can send **personalized push notifications** to VTEX store visitors.
+
+---
+
+### Customize Event Data
+
+You can enable or disable which VTEX events CleverTap should receive.
+
+1. In VTEX Admin → **My Apps → CleverTap Pixel App → Settings**
+2. Toggle events ON or OFF under **Track Events**.
+
+This lets you control which parts of the user journey CleverTap records.
+
+---
+
+### Profile Properties Synced
+
+The VTEX CleverTap app automatically sends customer details as **CleverTap Profile Properties**, including:
+
+| Property               | Description           |
+| ---------------------- | --------------------- |
+| Email                  | Customer email        |
+| Phone                  | Customer phone number |
+| First Name / Last Name | Customer name         |
+| Geolocation            | Geolocation infos     |
+
+---
+
+## 6. Cart Abandonment and Web Campaigns
+
+Once VTEX data is flowing into CleverTap, you can create **dynamic cart abandonment campaigns**.
+
+### How It Works
+
+- **Cart Events:** Captured automatically by the VTEX pixel app.
+- **Checkout Events:** Captured through the added checkout script.
+- **Product Catalog:** Synced through VTEX APIs, enabling dynamic product personalization.
+
+---
+
+# FAQs
+
+### Do I need to configure anything inside CleverTap?
+
+No. Configuration is done **entirely in VTEX** — you only need your **Project ID, Passcode, and Region** from CleverTap.
+
+---
+
+### Does this integration work with all VTEX stores?
+
+It supports **VTEX IO** stores.
+
+---
+
+### What events are supported?
+
+All standard ecommerce events:
+
+- Products Searched
+- Product Filtered By Category
+- Product List Viewed
+- Promotion Viewed
+- Promotion Clicked
+- Product Viewed
+- Product Clicked
+- Product Added To Cart
+- Product Removed From Cart
+- Cart Viewed
+- Product Added to Wishlist
+- Product Removed from Wishlist
+- Product Shared
+- Order Created
+- Checkout Product Added To Cart
+- Checkout Product Removed From Cart
+- Checkout Cart Viewed
+- Checkout Started
+- Payment info
+- Checkout Step Viewed/Completed
+- Coupon Applied
+- Coupon Denied
+
+---
+
+# Summary
+
+✅ **Install the VTEX CleverTap pixel app**
+✅ **Enter your CleverTap credentials inside VTEX**
+✅ **Add the checkout script** (crucial for complete funnel tracking)
+✅ **Verify events in CleverTap**
+✅ **Create personalized campaigns**
+
+Once complete, you’ll have a fully automated connection between your VTEX store and CleverTap, enabling data-driven marketing and personalized customer engagement.
