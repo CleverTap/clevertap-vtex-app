@@ -5,6 +5,7 @@ import { getQuantity } from './get-quantity'
 import { getSeller } from './get-seller'
 import { getItemFromStorage } from './storage-item'
 import { getPaymentMethodsString } from './get-payment-method'
+import { normalizeUrl } from './normalize-url'
 
 export {
   formatCartSummary,
@@ -14,4 +15,5 @@ export {
   getQuantity,
   getCategory,
   getPaymentMethodsString,
+  normalizeUrl,
 }

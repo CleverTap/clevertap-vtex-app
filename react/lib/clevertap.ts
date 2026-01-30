@@ -136,7 +136,7 @@ export function initClevertapNotifications() {
   })
 }
 
-async function fetchProfileSession(): Promise<CleverTapProfile | null> {
+export async function fetchProfileSession(): Promise<CleverTapProfile | null> {
   try {
     const res = await fetch(
       '/api/sessions?items=profile.firstName,profile.lastName,profile.email,profile.phone'

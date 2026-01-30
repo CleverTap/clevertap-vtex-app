@@ -29,11 +29,16 @@ import {
   getPrice,
   getQuantity,
   getSeller,
+  normalizeUrl,
 } from './utils'
-import { initClevertapProfile, verifyIsLogged } from '../lib/clevertap'
+import {
+  fetchProfileSession,
+  initClevertapProfile,
+  verifyIsLogged,
+} from '../lib/clevertap'
 
 export async function signIn(eventData: UserData) {
-  const { isAuthenticated } = eventData
+  const { isAuthenticated, email } = eventData
   const isLogged = verifyIsLogged()
 
   if (isAuthenticated && !isLogged) {
@@ -46,6 +51,12 @@ export async function signIn(eventData: UserData) {
       config.isLogged = true
 
       localStorage.setItem('clevertapConfigs', JSON.stringify(config))
+
+      const userEmail = email || (await fetchProfileSession())?.email
+
+      if (userEmail) {
+        signUp({ email: userEmail })
+      }
     } catch (e) {
       console.error('CleverTap: failed to update isLogged in localStorage', e)
     }
@@ -53,7 +64,7 @@ export async function signIn(eventData: UserData) {
 }
 
 export function signUp(eventData: SignUpData) {
-  const eventName = 'Signing Up'
+  const eventName = 'Sign Up'
 
   const { email } = eventData
 
@@ -69,8 +80,10 @@ export function search(eventData: SearchData) {
 
   const { term } = eventData
 
+  const decodedTerm = term ? decodeURIComponent(term) : term
+
   const data = {
-    keyword: term,
+    keyword: decodedTerm,
   }
 
   clevertap.event.push(eventName, data)
@@ -162,6 +175,7 @@ export function productView(eventData: ProductViewData) {
   const price = getPrice(seller)
   const quantity = getQuantity(seller)
   const category = getCategory(categories)
+  const normalizedUrl = normalizeUrl(detailUrl)
 
   const data = {
     product_id: productId,
@@ -172,7 +186,7 @@ export function productView(eventData: ProductViewData) {
     brand,
     price,
     quantity,
-    url: detailUrl,
+    url: normalizedUrl,
     image_url: imageUrl,
   }
 
@@ -191,6 +205,7 @@ export function productClick(eventData: ProductClickData) {
   const price = getPrice(seller)
   const quantity = getQuantity(seller)
   const category = getCategory(categories)
+  const normalizedUrl = normalizeUrl(detailUrl)
 
   const data = {
     position: list,
@@ -202,7 +217,7 @@ export function productClick(eventData: ProductClickData) {
     brand,
     price,
     quantity,
-    url: detailUrl,
+    url: normalizedUrl,
     image_url: imageUrl,
   }
 
@@ -235,6 +250,8 @@ export function addToCart(eventData: AddToCartData) {
     ],
   } = eventData
 
+  const normalizedUrl = normalizeUrl(detailUrl)
+
   const data = {
     cart_id: id,
     product_id: productId,
@@ -245,7 +262,7 @@ export function addToCart(eventData: AddToCartData) {
     variant: ean,
     price,
     quantity,
-    url: detailUrl,
+    url: normalizedUrl,
     image_url: imageUrl,
     // prodUct_is_wishlisted: true,
   }
@@ -279,6 +296,8 @@ export function removeFromCart(eventData: RemoveFromCartData) {
     ],
   } = eventData
 
+  const normalizedUrl = normalizeUrl(detailUrl)
+
   const data = {
     cart_id: id,
     product_id: productId,
@@ -289,7 +308,7 @@ export function removeFromCart(eventData: RemoveFromCartData) {
     variant: ean,
     price,
     quantity,
-    url: detailUrl,
+    url: normalizedUrl,
     image_url: imageUrl,
   }
 
@@ -338,6 +357,7 @@ export function addToWishlist(eventData: AddToWishlistData) {
   const price = getPrice(seller)
   const quantity = getQuantity(seller)
   const category = getCategory(categories)
+  const normalizedUrl = normalizeUrl(detailUrl)
 
   const data = {
     // wishlist_id: 'teste123',
@@ -350,7 +370,7 @@ export function addToWishlist(eventData: AddToWishlistData) {
     variant: ean,
     price,
     quantity,
-    url: detailUrl,
+    url: normalizedUrl,
     image_url: imageUrl,
   }
 
@@ -374,6 +394,7 @@ export function removeToWishlist(eventData: RemoveToWishlistData) {
   const price = getPrice(seller)
   const quantity = getQuantity(seller)
   const category = getCategory(categories)
+  const normalizedUrl = normalizeUrl(detailUrl)
 
   const data = {
     // wishlist_id: 'teste123',
@@ -386,7 +407,7 @@ export function removeToWishlist(eventData: RemoveToWishlistData) {
     variant: ean,
     price,
     quantity,
-    url: detailUrl,
+    url: normalizedUrl,
     image_url: imageUrl,
   }
 
