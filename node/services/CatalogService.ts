@@ -22,12 +22,17 @@ export class CatalogService {
   }
 
   public async syncCatalog(ctx: Context, options: SyncCatalogOptions) {
+    const {
+      vtex: { logger },
+    } = ctx
+
     try {
       const skuIds = await this.getAllSkuIds()
 
+      logger.info(`Processed: ${skuIds.length} skus`)
       console.info(`Processed: ${skuIds.length} skus`)
 
-      const clevertapSkus = await this.buildClevertapSkus(skuIds)
+      const clevertapSkus = await this.buildClevertapSkus(ctx, skuIds)
       const csv = json2csv(clevertapSkus)
 
       const {
@@ -43,8 +48,10 @@ export class CatalogService {
         replace: options.replace,
       })
 
+      logger.info(`Load completed`)
       console.info(`Load completed`)
     } catch (err) {
+      logger.error(`Error processing load: ${err}`)
       console.error(`Error processing load: ${err}`)
       throw err
     }
@@ -67,7 +74,14 @@ export class CatalogService {
     return skuIds
   }
 
-  private async buildClevertapSkus(skuIds: number[]): Promise<any[]> {
+  private async buildClevertapSkus(
+    ctx: Context,
+    skuIds: number[]
+  ): Promise<any[]> {
+    const {
+      vtex: { logger },
+    } = ctx
+
     const clevertapSkus: any[] = []
 
     for (const skuId of skuIds) {
@@ -80,6 +94,7 @@ export class CatalogService {
 
         clevertapSkus.push(this.mapToClevertapSku(skuData))
       } catch (err) {
+        logger.error(`Error processing SKU ${skuId}: ${err}`)
         console.error(`Error processing SKU ${skuId}: ${err}`)
       }
     }

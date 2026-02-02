@@ -113,6 +113,10 @@ async function handleCatalogSync(
   vbaseClient: VBase,
   integrationEmail: string
 ) {
+  const {
+    vtex: { logger },
+  } = ctx
+
   const now = new Date().toISOString()
 
   const baseBody = {
@@ -130,6 +134,7 @@ async function handleCatalogSync(
     const hoursSince = (Date.now() - lastRun) / 1000 / 60 / 60
 
     if (hoursSince >= 24) {
+      logger.info('[OMS] 24h passed, running catalog sync...')
       console.info('[OMS] 24h passed, running catalog sync...')
 
       const newCtx = ({

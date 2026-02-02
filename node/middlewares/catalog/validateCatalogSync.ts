@@ -10,12 +10,17 @@ export async function validateCatalogSync(
   ctx: Context,
   next: () => Promise<any>
 ) {
+  const {
+    vtex: { logger },
+  } = ctx
+
   const body = await json(ctx.req)
 
   if (!body) {
     ctx.status = 400
     ctx.body = { error: 'Body is required' }
 
+    logger.error('400: Body is required')
     ctx.throw(400, 'Body is required')
   }
 
@@ -25,6 +30,7 @@ export async function validateCatalogSync(
     ctx.status = 400
     ctx.body = { error: 'Missing required fields' }
 
+    logger.error('400: Missing required fields')
     ctx.throw(400, 'Missing required fields')
   }
 
