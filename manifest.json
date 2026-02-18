@@ -1,7 +1,7 @@
 {
   "name": "vtex-clevertap-app",
   "vendor": "clevertappartnerbr",
-  "version": "0.0.23",
+  "version": "0.0.24",
   "title": "VTEX CleverTap pixel app",
   "description": "VTEX app for CleverTap integration, enabling event tracking, campaign management, and catalog synchronization with CleverTap.",
   "billingOptions": {
@@ -65,6 +65,13 @@
       "name": "outbound-access",
       "attrs": {
         "host": "mec1.api.clevertap.com",
+        "path": "/*"
+      }
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "us1-sharedresources-platformstorages3bucket-7uuj7y1r2ute.s3.us-west-2.amazonaws.com",
         "path": "/*"
       }
     },
