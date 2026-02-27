@@ -1,4 +1,5 @@
 import {
+  getUseChargeEventOnlyWhenOrderApproved,
   verifyEvent,
   verifyIsLogged,
   verifyIsUnknownEvents,
@@ -167,7 +168,9 @@ export async function sendEnhancedEcommerceEvents(e: PixelMessage) {
 
       if (!isUnknownEvents && !isLogged) return
 
-      if (verifyEvent('vtex:orderPlaced')) orderPlaced(e.data)
+      if (verifyEvent('vtex:orderPlaced')) {
+        orderPlaced(e.data, getUseChargeEventOnlyWhenOrderApproved())
+      }
 
       break
     }

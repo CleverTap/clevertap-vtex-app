@@ -19,7 +19,7 @@
       return
     }
 
-    const { allowUnknownUsersEvents, trackEvents } = preferences
+    const { allowUnknownUsersEvents, trackEvents, useChargeEventOnlyWhenOrderApproved } = preferences
 
     const clevertapConfigs = {
       accountID,
@@ -30,6 +30,7 @@
       preferences: {
         allowUnknownUsersEvents,
         trackEvents,
+        useChargeEventOnlyWhenOrderApproved,
       },
     }
 
