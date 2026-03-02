@@ -80,6 +80,48 @@
     {
       "name": "outbound-access",
       "attrs": {
+        "host": "sg1-sharedresources-platformstorages3bucket-ybaqypxq31zd",
+        "path": "/*"
+      }
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "aps3-sharedresources-platformstorages3bucket-1oe9x37p5twuu",
+        "path": "/*"
+      }
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "mec1-sharedresources-platformstorages3bucket-11ei3kke7jbmx",
+        "path": "/*"
+      }
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "in1-sharedresources-platformstorages3bucket-1otq9lflos3e",
+        "path": "/*"
+      }
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "eu1-sharedresources-platformstorages3bucket-np5wb2kjrbki",
+        "path": "/*"
+      }
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
+        "host": "sk1-sharedresources-platformstorages3bucket-8d8zxzdp3wsj",
+        "path": "/*"
+      }
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
         "host": "portal.vtexcommercestable.com.br",
         "path": "/api/oms/pvt/orders/*"
       }
