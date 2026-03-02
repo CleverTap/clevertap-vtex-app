@@ -438,8 +438,12 @@ export function share(eventData: ShareData) {
   clevertap.event.push(eventName, data)
 }
 
-export function orderPlaced(eventData: OrderPlacedData) {
-  const eventName = 'Order Created'
+export function orderPlaced(
+  eventData: OrderPlacedData,
+  useChargeEventOnlyWhenOrderApproved: boolean
+) {
+  const eventName =
+    useChargeEventOnlyWhenOrderApproved ? 'Order Created' : 'Charged'
 
   const {
     transactionId,

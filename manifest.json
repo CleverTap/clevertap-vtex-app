@@ -1,7 +1,7 @@
 {
   "name": "vtex-clevertap-app",
   "vendor": "clevertappartnerbr",
-  "version": "0.0.24",
+  "version": "0.0.25",
   "title": "VTEX CleverTap pixel app",
   "description": "VTEX app for CleverTap integration, enabling event tracking, campaign management, and catalog synchronization with CleverTap.",
   "billingOptions": {
@@ -11,7 +11,9 @@
     },
     "free": true,
     "type": "free",
-    "availableCountries": ["*"]
+    "availableCountries": [
+      "*"
+    ]
   },
   "builders": {
     "node": "6.x",
@@ -312,6 +314,12 @@
           "catalogSync": {
             "title": "Active Catalog Sync",
             "description": "Enable this option to automatically sync the catalog every 24 hours.",
+            "default": true,
+            "type": "boolean"
+          },
+          "useChargeEventOnlyWhenOrderApproved": {
+            "title": "Use Charged event only when order is approved",
+            "description": "When enabled, the Charged event is sent only after payment is approved. When disabled, the Charged event is sent when the customer places the order.",
             "default": true,
             "type": "boolean"
           },

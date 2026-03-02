@@ -98,6 +98,25 @@ export function verifyIsLogged() {
   return isLogged
 }
 
+export function getUseChargeEventOnlyWhenOrderApproved(): boolean {
+  const savedConfig = localStorage.getItem('clevertapConfigs')
+  let config = null
+
+  if (savedConfig) {
+    try {
+      config = JSON.parse(savedConfig)
+    } catch (e) {
+      console.error('CleverTap: failed to parse config from localStorage', e)
+    }
+  }
+
+  if (!config?.preferences) {
+    return true
+  }
+
+  return config.preferences.useChargeEventOnlyWhenOrderApproved !== false
+}
+
 export async function initClevertapProfile(): Promise<boolean> {
   try {
     const profile = await fetchProfileSession()
