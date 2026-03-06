@@ -1,5 +1,9 @@
-import clevertap from 'clevertap-web-sdk'
-
+import {
+  fetchProfileSession,
+  initClevertapProfile,
+  pushEvent,
+  verifyIsLogged,
+} from '../lib/clevertap'
 import type {
   AddToCartData,
   AddToWishlistData,
@@ -31,12 +35,6 @@ import {
   getSeller,
   normalizeUrl,
 } from './utils'
-import {
-  fetchProfileSession,
-  initClevertapProfile,
-  pushEvent,
-  verifyIsLogged,
-} from '../lib/clevertap'
 
 export async function signIn(eventData: UserData) {
   const { isAuthenticated, email } = eventData
