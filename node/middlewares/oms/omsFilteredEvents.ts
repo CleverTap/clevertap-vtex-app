@@ -42,8 +42,11 @@ export async function omsFilteredEvents(
   const clevertap = await getCleverTap(ctx)
   const response = await omsClient.order(orderId, 'AUTH_TOKEN')
   const { preferences } = settings
-  const { catalogSync, integrationEmail, useChargeEventOnlyWhenOrderApproved } =
-    preferences
+  const {
+    catalogSync,
+    integrationEmail,
+    useChargeEventOnlyWhenOrderApproved,
+  } = preferences
 
   if (!clevertap) return
 
@@ -80,8 +83,7 @@ export async function omsFilteredEvents(
   const eventMap: Record<string, { name: string; includeItems?: boolean }> = {
     canceled: { name: 'Order Cancelled' },
     'payment-approved': {
-      name:
-        useChargeEventOnlyWhenOrderApproved ? 'Charged' : 'Order Approved',
+      name: useChargeEventOnlyWhenOrderApproved ? 'Charged' : 'Order Approved',
     },
     incomplete: { name: 'Checkout Failed', includeItems: true },
     'payment-denied': { name: 'Checkout Failed', includeItems: true },
@@ -91,8 +93,8 @@ export async function omsFilteredEvents(
 
   if (event) {
     const evtData = event.includeItems
-      ? { ...payload, items: normalizeItems(response.items) }
-      : payload
+      ? { ...payload, items: normalizeItems(response.items), ct_source: 'vtex' }
+      : { ...payload, ct_source: 'vtex' }
 
     const data = {
       identity,
