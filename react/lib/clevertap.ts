@@ -189,3 +189,7 @@ export async function fetchProfileSession(): Promise<CleverTapProfile | null> {
     return null
   }
 }
+
+export function pushEvent(eventName: string, data: Record<string, unknown>) {
+  clevertap.event.push(eventName, { ...data, ct_source: 'vtex' })
+}
