@@ -1,0 +1,1 @@
+# clevertap-vtex-app
