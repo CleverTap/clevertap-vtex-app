@@ -1,4 +1,5 @@
 import type { CartItem } from '../../typings/events'
+import { formatMoneyAmount } from './format-money'
 
 export function formatCartSummary(
   cartItems: CartItem[],
@@ -9,18 +10,22 @@ export function formatCartSummary(
   let totalValue = 0
   let totalItems = 0
 
-  if (!cartItems.length) return { totalValue: 0.0, totalItems }
+  if (!cartItems.length) {
+    return { totalValue: formatMoneyAmount(0), totalItems }
+  }
 
   cartItems.forEach((item: CartItem) => {
     const shouldFormatPrice = item.priceIsInt ?? options?.dividePrice
-    const formattedPrice = shouldFormatPrice ? item.price / 100 : item.price
+    const formattedPrice = formatMoneyAmount(
+      shouldFormatPrice ? item.price / 100 : item.price
+    )
 
     totalValue += formattedPrice * item.quantity
     totalItems += item.quantity
   })
 
   return {
-    totalValue: Number(totalValue.toFixed(2)),
+    totalValue: formatMoneyAmount(totalValue),
     totalItems,
   }
 }

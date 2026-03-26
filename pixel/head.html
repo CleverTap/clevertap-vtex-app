@@ -19,13 +19,30 @@
       return
     }
 
-    const { allowUnknownUsersEvents, trackEvents, useChargeEventOnlyWhenOrderApproved } = preferences
+    const {
+      allowUnknownUsersEvents,
+      trackEvents,
+      useChargeEventOnlyWhenOrderApproved,
+    } = preferences
+
+    let isLogged = false
+    try {
+      const saved = localStorage.getItem('clevertapConfigs')
+      if (saved) {
+        const prev = JSON.parse(saved)
+        if (prev && typeof prev.isLogged === 'boolean') {
+          isLogged = prev.isLogged
+        }
+      }
+    } catch (e) {
+      // ignore invalid or missing storage
+    }
 
     const clevertapConfigs = {
       accountID,
       region,
-      isLogged: false,
-      privacy: { optOut: false, useIP: false },
+      isLogged,
+      privacy: { optOut: false, useIP: true },
       spa: true,
       preferences: {
         allowUnknownUsersEvents,
