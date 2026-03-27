@@ -93,8 +93,12 @@ export async function omsFilteredEvents(
 
   if (event) {
     const evtData = event.includeItems
-      ? { ...payload, items: normalizeItems(response.items), ct_source: 'vtex' }
-      : { ...payload, ct_source: 'vtex' }
+      ? {
+          ...payload,
+          items: normalizeItems(response.items),
+          'CT Source': 'vtex',
+        }
+      : { ...payload, 'CT Source': 'vtex' }
 
     const data = {
       identity,

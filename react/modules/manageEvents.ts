@@ -1,5 +1,4 @@
 import {
-  fetchProfileSession,
   initClevertapProfile,
   pushEvent,
   verifyIsLogged,
@@ -26,18 +25,21 @@ import type {
   ViewCartData,
 } from '../typings/events'
 import {
+  fetchProductBySkuId,
   formatCartSummary,
+  formatMoneyAmount,
   getCategory,
   getItemFromStorage,
   getPaymentMethodsString,
   getPrice,
   getQuantity,
   getSeller,
+  normalizeCartItemUnitPrice,
   normalizeUrl,
 } from './utils'
 
 export async function signIn(eventData: UserData) {
-  const { isAuthenticated, email } = eventData
+  const { isAuthenticated } = eventData
   const isLogged = verifyIsLogged()
 
   if (isAuthenticated && !isLogged) {
@@ -50,12 +52,6 @@ export async function signIn(eventData: UserData) {
       config.isLogged = true
 
       localStorage.setItem('clevertapConfigs', JSON.stringify(config))
-
-      const userEmail = email || (await fetchProfileSession())?.email
-
-      if (userEmail) {
-        signUp({ email: userEmail })
-      }
     } catch (e) {
       console.error('CleverTap: failed to update isLogged in localStorage', e)
     }
@@ -171,7 +167,7 @@ export function productView(eventData: ProductViewData) {
   const { itemId, imageUrl, ean, sellers } = selectedSku
 
   const seller = getSeller(sellers)
-  const price = getPrice(seller)
+  const price = formatMoneyAmount(getPrice(seller))
   const quantity = getQuantity(seller)
   const category = getCategory(categories)
   const normalizedUrl = normalizeUrl(detailUrl)
@@ -196,15 +192,15 @@ export function productClick(eventData: ProductClickData) {
   const eventName = 'Product Clicked'
 
   const { list, product } = eventData
-  const { productId, sku, categories, productName, brand, detailUrl } = product
+  const { productId, sku, categories, productName, brand, link } = product
 
   const { itemId, image, ean, seller } = sku
   const imageUrl = image ? image.imageUrl : ''
 
-  const price = getPrice(seller)
+  const price = formatMoneyAmount(getPrice(seller))
   const quantity = getQuantity(seller)
   const category = getCategory(categories)
-  const normalizedUrl = normalizeUrl(detailUrl)
+  const normalizedUrl = normalizeUrl(link)
 
   const data = {
     position: list,
@@ -242,6 +238,7 @@ export function addToCart(eventData: AddToCartData) {
         brand,
         ean,
         price,
+        priceIsInt,
         quantity,
         detailUrl,
         imageUrl,
@@ -259,7 +256,7 @@ export function addToCart(eventData: AddToCartData) {
     name,
     brand,
     variant: ean,
-    price,
+    price: normalizeCartItemUnitPrice(price, priceIsInt),
     quantity,
     url: normalizedUrl,
     image_url: imageUrl,
@@ -288,6 +285,7 @@ export function removeFromCart(eventData: RemoveFromCartData) {
         brand,
         ean,
         price,
+        priceIsInt,
         quantity,
         detailUrl,
         imageUrl,
@@ -305,7 +303,7 @@ export function removeFromCart(eventData: RemoveFromCartData) {
     name,
     brand,
     variant: ean,
-    price,
+    price: normalizeCartItemUnitPrice(price, priceIsInt),
     quantity,
     url: normalizedUrl,
     image_url: imageUrl,
@@ -346,17 +344,17 @@ export function addToWishlist(eventData: AddToWishlistData) {
 
   const { product, selectedItem } = items
 
-  const { sku, productName, productId, detailUrl, categories, brand } = product
+  const { sku, productName, productId, link, categories, brand } = product
 
   const { itemId, images, ean } = selectedItem
 
   const imageUrl = images && images.length > 0 ? images[0].imageUrl : ''
 
   const seller = getSeller(sku ? sku.sellers : selectedItem.sellers)
-  const price = getPrice(seller)
+  const price = formatMoneyAmount(getPrice(seller))
   const quantity = getQuantity(seller)
   const category = getCategory(categories)
-  const normalizedUrl = normalizeUrl(detailUrl)
+  const normalizedUrl = normalizeUrl(link)
 
   const data = {
     // wishlist_id: 'teste123',
@@ -383,17 +381,17 @@ export function removeToWishlist(eventData: RemoveToWishlistData) {
 
   const { product, selectedItem } = items
 
-  const { sku, productName, productId, detailUrl, categories, brand } = product
+  const { sku, productName, productId, link, categories, brand } = product
 
   const { itemId, images, ean } = selectedItem
 
   const imageUrl = images && images.length > 0 ? images[0].imageUrl : ''
 
   const seller = getSeller(sku ? sku.sellers : selectedItem.sellers)
-  const price = getPrice(seller)
+  const price = formatMoneyAmount(getPrice(seller))
   const quantity = getQuantity(seller)
   const category = getCategory(categories)
-  const normalizedUrl = normalizeUrl(detailUrl)
+  const normalizedUrl = normalizeUrl(link)
 
   const data = {
     // wishlist_id: 'teste123',
@@ -413,25 +411,46 @@ export function removeToWishlist(eventData: RemoveToWishlistData) {
   pushEvent(eventName, data)
 }
 
-export function share(eventData: ShareData) {
+export async function share(eventData: ShareData) {
   const eventName = 'Product Shared'
 
   const { itemId, method } = eventData
+  const catalog = await fetchProductBySkuId(itemId)
 
-  const data = {
+  const data: Record<string, unknown> = {
     share_via: method,
-    // product_id: '123sku123',
     sku: itemId,
-    // category: 'Shoes',
-    // name: 'UltraRange 2.0 Shoe',
-    // brand: 'Vans',
-    // variant: 'VN000D60BLK',
-    // price: 100,
-    // quantity: 10,
-    // url:
-    //  'https://www.vans.com/en-us/p/shoes/ultrarange-5140/ultrarange-20-shoe-VN000D60BLK',
-    // image_url:
-    //  'https://assets.vans.com/images/t_img/c_fill,g_center,f_auto,h_573,w_458,e_unsharp_mask:100/dpr_2.0/v1739986118/VN000D60BLK-ALT1/UltraRange-20-Shoe.png',
+  }
+
+  if (catalog) {
+    const { product, item } = catalog
+    const sellers = item.sellers ?? []
+    const seller = sellers.length ? getSeller(sellers) : undefined
+    const rawPrice = seller ? getPrice(seller) : undefined
+    const price =
+      rawPrice != null && !Number.isNaN(Number(rawPrice))
+        ? formatMoneyAmount(rawPrice)
+        : undefined
+
+    const quantity = seller ? getQuantity(seller) : undefined
+    const category = getCategory(product.categories ?? []) ?? ''
+    const rawLink = product.link || product.detailUrl || product.linkText || ''
+    const imageUrl =
+      item.imageUrl ||
+      (item.images?.length ? item.images[0]?.imageUrl : '') ||
+      ''
+
+    Object.assign(data, {
+      product_id: product.productId,
+      category,
+      name: product.productName || item.name,
+      brand: product.brand,
+      variant: item.ean || '',
+      ...(price !== undefined ? { price } : {}),
+      ...(quantity !== undefined ? { quantity } : {}),
+      url: normalizeUrl(rawLink),
+      image_url: normalizeUrl(imageUrl),
+    })
   }
 
   pushEvent(eventName, data)
@@ -463,11 +482,11 @@ export function orderPlaced(
   const data = {
     order_id: transactionId,
     affiliation: transactionAffiliation,
-    value: transactionTotal,
-    revenue: transactionSubtotal,
-    shipping: transactionShipping,
-    tax: transactionTax,
-    discount: transactionDiscounts,
+    value: formatMoneyAmount(transactionTotal),
+    revenue: formatMoneyAmount(transactionSubtotal),
+    shipping: formatMoneyAmount(transactionShipping),
+    tax: formatMoneyAmount(transactionTax),
+    discount: formatMoneyAmount(transactionDiscounts),
     payment_method: paymentMethod,
     currency,
     coupon: coupon || '',

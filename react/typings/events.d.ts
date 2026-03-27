@@ -141,8 +141,8 @@ export interface AddToWishlistData extends EventData {
   eventType: 'vtex:addToWishlist'
   eventName: 'vtex:addToWishlist'
   items: {
-    selectedItem: SelectedItem
     product: ProductSummary
+    selectedItem: SelectedItem
   }
   list: string
 }
@@ -152,8 +152,8 @@ export interface RemoveToWishlistData extends EventData {
   eventType: 'vtex:removeToWishlist'
   eventName: 'vtex:removeToWishlist'
   items: {
-    selectedItem: SelectedItem
     product: ProductSummary
+    selectedItem: SelectedItem
   }
   list: string
 }
@@ -303,13 +303,12 @@ export interface ProductSummary {
   brand: string
   brandId: string
   categories: string[]
-  detailUrl: string
+  link: string
   items: ItemSummary[]
   linkText: string
   productId: string
   productName: string
   productReference: string
-  selectedItem: SelectedItem
   sku: ItemSummary
 }
 

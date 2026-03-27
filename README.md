@@ -47,6 +47,7 @@ The **VTEX CleverTap App** is a VTEX IO application that natively integrates the
 ### 1.4 Supported Regions
 
 The app supports all CleverTap regions:
+
 - `us1` - United States
 - `eu1` - Europe
 - `in1` - India
@@ -95,12 +96,12 @@ The app supports all CleverTap regions:
                                │
                                ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│                      VTEX BACKEND (Node.js)                     │ 
+│                      VTEX BACKEND (Node.js)                     │
 │                                                                 │
 │  ┌─────────────────┐    ┌────────────────┐                      │
 │  │  OMS Events     │───▶│   Middleware   │                      │
 │  │  Broadcast      │    │   Handlers     │                      │
-│  └─────────────────┘    └────────────────┘                      │ 
+│  └─────────────────┘    └────────────────┘                      │
 │          │                      │                               │
 │          │                      ▼                               │
 │          │           ┌─────────────────────┐                    │
@@ -120,31 +121,34 @@ The app supports all CleverTap regions:
 │  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐           │
 │  │   Events     │  │   Profiles   │  │   Catalog    │           │
 │  │   API        │  │   API        │  │   API        │           │
-│  └──────────────┘  └──────────────┘  └──────────────┘           │ 
+│  └──────────────┘  └──────────────┘  └──────────────┘           │
 │                                                                 │
 │  ┌──────────────────────────────────────────────────┐           │
 │  │  Dashboard & Campaign Management                 │           │
-│  │  ├─ Segmentation                                 │           │ 
+│  │  ├─ Segmentation                                 │           │
 │  │  ├─ Web Push                                     │           │
 │  │  ├─ Web Pop-ups                                  │           │
 │  │  └─ Exit Intent                                  │           │
-│  └──────────────────────────────────────────────────┘           │ 
+│  └──────────────────────────────────────────────────┘           │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
 ### 2.2 Application Layers
 
 #### **Presentation Layer (Frontend)**
+
 - **Pixel App (React)**: Initializes CleverTap SDK and listens to VTEX events
 - **Service Worker**: Manages push notifications and offline functionality
 - **CleverTap Web SDK**: JavaScript library that communicates with CleverTap
 
 #### **Business Logic Layer (Backend - Node.js)**
+
 - **Event Handlers**: Process OMS (Order Management System) events
 - **Catalog Service**: Manages product synchronization
 - **Middleware Layer**: Validates and transforms data before sending
 
 #### **Integration Layer**
+
 - **CleverTap API Clients**: HTTP clients for CleverTap communication
 - **VTEX API Clients**: Clients to access VTEX APIs (Catalog, OMS, Master Data)
 
@@ -275,6 +279,7 @@ Before installing the app, ensure you have:
 #### Step 1: Install the App from VTEX App Store
 
 1. Access your VTEX Admin:
+
    ```
    https://{your-account}.myvtex.com/admin
    ```
@@ -297,23 +302,26 @@ After installation, configure the app with your CleverTap credentials:
 
 3. Fill in the required fields:
 
-| Field | Description | Example | Required |
-|-------|-------------|---------|----------|
-| **CleverTap Project ID** | Your CleverTap Account ID | `XXX-XXX-XXX` | Yes |
-| **CleverTap Account Passcode** | Authentication passcode | `XXX-XXX-XXXX` | Yes |
-| **CleverTap Region** | Your account region | `us1`, `eu1`, `in1`, `sg1` | Yes |
+| Field                          | Description               | Example                    | Required |
+| ------------------------------ | ------------------------- | -------------------------- | -------- |
+| **CleverTap Project ID**       | Your CleverTap Account ID | `XXX-XXX-XXX`              | Yes      |
+| **CleverTap Account Passcode** | Authentication passcode   | `XXX-XXX-XXXX`             | Yes      |
+| **CleverTap Region**           | Your account region       | `us1`, `eu1`, `in1`, `sg1` | Yes      |
 
 4. Configure **Preference Settings**:
 
 ##### Allow Events from Unknown Users
+
 - **Default**: `true`
 - **Description**: Enables event tracking for non-authenticated users
 - **Use Case**: Track anonymous browsing behavior before login
 
 ##### Track Events
+
 Enable/disable specific events to track:
 
 **Storefront Events:**
+
 - `vtex:search` - Products Searched
 - `vtex:filterManipulation` - Product Filtered By Category
 - `categoryView` - Product List Viewed
@@ -330,6 +338,7 @@ Enable/disable specific events to track:
 - `vtex:orderPlaced` - Order Created
 
 **Checkout Events:**
+
 - `add_to_cart` - Checkout Product Added To Cart
 - `remove_from_cart` - Checkout Product Removed From Cart
 - `view_cart` - Checkout Cart Viewed
@@ -340,11 +349,13 @@ Enable/disable specific events to track:
 - `coupon_denied` - Coupon Denied
 
 ##### Active Catalog Sync
+
 - **Default**: `true`
 - **Description**: Automatically syncs product catalog every 24 hours
 - **Note**: When enabled, Integration Email becomes mandatory
 
 ##### Integration Email
+
 - **Required if**: Catalog Sync is enabled
 - **Description**: Email address to receive sync notifications
 - **Format**: Valid email address
@@ -358,6 +369,7 @@ The checkout operates independently from the storefront. To track checkout event
 ##### Option A: Via Checkout Settings
 
 1. Navigate to:
+
    ```
    Store Settings → Checkout → Code → checkout6-custom.js
    ```
@@ -386,6 +398,7 @@ The checkout operates independently from the storefront. To track checkout event
 In some VTEX Admin versions:
 
 1. Navigate to:
+
    ```
    Store Settings → Checkout UI Custom → JavaScript
    ```
@@ -395,6 +408,7 @@ In some VTEX Admin versions:
 3. Save changes
 
 **⚠️ WARNING**: Without this script, the following events will NOT be tracked:
+
 - Checkout Started
 - Payment Info
 - Checkout Steps
@@ -408,6 +422,7 @@ After configuration, verify the integration:
 1. **Open your storefront** in a browser
 
 2. **Perform test actions**:
+
    - Search for products
    - View product details
    - Add items to cart
@@ -415,6 +430,7 @@ After configuration, verify the integration:
    - Complete a test order
 
 3. **Check CleverTap Dashboard**:
+
    - Go to **Events** section
    - Verify events are appearing:
      - `Product Viewed`
@@ -439,26 +455,31 @@ The app automatically tracks user interactions across the entire shopping journe
 These events are captured by the React pixel app:
 
 **Search & Discovery**
+
 - `Products Searched`: Triggered when user performs a search
 - `Product Filtered`: When filters are applied to product listings
 - `Product List Viewed`: When a category or collection page is viewed
 
 **Product Engagement**
+
 - `Product Viewed`: When a product detail page is loaded
 - `Product Clicked`: When a product is clicked from a list
 - `Promotion Viewed`: When promotional banners are viewed
 - `Promotion Clicked`: When promotional content is clicked
 
 **Shopping Cart**
+
 - `Product Added to Cart`: Item added to shopping cart
 - `Product Removed from Cart`: Item removed from cart
 - `Cart Viewed`: Shopping cart page viewed
 
 **Wishlist**
+
 - `Product Added to Wishlist`: Item added to wishlist
 - `Product Removed from Wishlist`: Item removed from wishlist
 
 **Social**
+
 - `Product Shared`: Product shared via social channels
 
 #### Backend Events (OMS)
@@ -466,6 +487,7 @@ These events are captured by the React pixel app:
 These events are captured by the Node.js backend:
 
 **Order States**
+
 - `Charged`: Order payment approved (`payment-approved` state)
 - `Order Cancelled`: Order cancelled by user or system (`canceled` state)
 - `Checkout Failed`: Payment denied or incomplete order (`payment-denied`, `incomplete` states)
@@ -475,6 +497,7 @@ These events are captured by the Node.js backend:
 The app automatically syncs customer data to CleverTap profiles:
 
 **Profile Properties:**
+
 ```javascript
 {
   Name: "Customer Full Name",
@@ -488,11 +511,13 @@ The app automatically syncs customer data to CleverTap profiles:
 ```
 
 **Data Sources:**
+
 - VTEX Session API (`/api/sessions`)
 - Master Data (CL entity)
 - Order Profile Data
 
 **Sync Trigger:**
+
 - On user login (`vtex:userData` event)
 - On order placement (via Master Data lookup)
 
@@ -504,6 +529,7 @@ Automatic product catalog sync with CleverTap's Catalog API.
 
 1. **Trigger**: Runs every 24 hours after first order with `payment-approved` status
 2. **Process**:
+
    - Fetches all SKU IDs from VTEX Catalog
    - Retrieves detailed SKU information
    - Transforms to CleverTap catalog format
@@ -534,6 +560,7 @@ Automatic product catalog sync with CleverTap's Catalog API.
 #### Manual Trigger
 
 While not exposed by default, catalog sync can be triggered manually by:
+
 - Enabling the route in `service.json`
 - Making a POST request to the catalog endpoint
 
@@ -584,6 +611,7 @@ While not exposed by default, catalog sync can be triggered manually by:
 #### Example: Product Viewed Event
 
 **VTEX Event Input:**
+
 ```javascript
 {
   eventName: 'vtex:productView',
@@ -608,6 +636,7 @@ While not exposed by default, catalog sync can be triggered manually by:
 ```
 
 **CleverTap Event Output:**
+
 ```javascript
 {
   event_name: 'Product Viewed',
@@ -663,12 +692,7 @@ The app subscribes to specific order state changes:
 ```json
 {
   "sender": "vtex.orders-broadcast",
-  "topics": [
-    "canceled",
-    "payment-approved",
-    "incomplete",
-    "payment-denied"
-  ]
+  "topics": ["canceled", "payment-approved", "incomplete", "payment-denied"]
 }
 ```
 
@@ -721,6 +745,7 @@ const processedOrders = new Map<string, Set<string>>()
 ```
 
 **Logic:**
+
 1. Check if order ID exists in cache
 2. Check if current state was already processed for this order
 3. If not processed, add to cache and proceed
@@ -824,6 +849,7 @@ const processedOrders = new Map<string, Set<string>>()
 ### 7.2 SKU Data Transformation
 
 **VTEX SKU Data:**
+
 ```javascript
 {
   Id: 123,
@@ -848,6 +874,7 @@ const processedOrders = new Map<string, Set<string>>()
 ```
 
 **CleverTap Catalog Format:**
+
 ```javascript
 {
   Identity: "123",
@@ -1163,12 +1190,14 @@ The app integrates with multiple CleverTap APIs:
 **Endpoint**: `https://{region}.api.clevertap.com/1/upload`
 
 **Authentication**:
+
 ```http
 X-CleverTap-Account-Id: {accountID}
 X-CleverTap-Passcode: {accountPasscode}
 ```
 
 **Request Body**:
+
 ```json
 {
   "d": [
@@ -1186,6 +1215,7 @@ X-CleverTap-Passcode: {accountPasscode}
 ```
 
 **Profile Update**:
+
 ```json
 {
   "d": [
@@ -1205,6 +1235,7 @@ X-CleverTap-Passcode: {accountPasscode}
 #### Catalog API
 
 **Get Presigned URL**:
+
 ```http
 POST https://{region}.api.clevertap.com/get_catalog_url
 Headers:
@@ -1218,6 +1249,7 @@ Response:
 ```
 
 **Upload CSV to S3**:
+
 ```http
 PUT {presignedS3URL}
 Content-Type: text/csv
@@ -1225,6 +1257,7 @@ Body: CSV data
 ```
 
 **Complete Upload**:
+
 ```http
 POST https://{region}.api.clevertap.com/upload_catalog_completed
 Headers:
@@ -1245,6 +1278,7 @@ Body:
 #### OMS API (Order Management)
 
 **Get Order Details**:
+
 ```http
 GET https://{accountName}.vtexcommercestable.com.br/api/oms/pvt/orders/{orderId}
 Headers:
@@ -1253,6 +1287,7 @@ Headers:
 ```
 
 **Response Structure**:
+
 ```json
 {
   "orderId": "ORDER-123",
@@ -1288,6 +1323,7 @@ Headers:
 #### Catalog API
 
 **Get SKU IDs (Paginated)**:
+
 ```http
 GET https://{accountName}.vtexcommercestable.com.br/api/catalog_system/pvt/sku/stockkeepingunitids?page={page}&pagesize={pageSize}
 
@@ -1303,6 +1339,7 @@ Response:
 ```
 
 **Get SKU Details**:
+
 ```http
 GET https://{accountName}.vtexcommercestable.com.br/api/catalog_system/pvt/sku/stockkeepingunitbyid/{skuId}
 
@@ -1332,6 +1369,7 @@ Response:
 #### Master Data API
 
 **Search Documents**:
+
 ```http
 GET https://api.vtex.com/{accountName}/dataentities/CL/search?_fields=email&_where=userId={userId}
 Headers:
@@ -1349,6 +1387,7 @@ Response:
 #### Session API
 
 **Get User Profile**:
+
 ```http
 GET https://{accountName}.myvtex.com/api/sessions?items=profile.firstName,profile.lastName,profile.email,profile.phone
 
@@ -1398,6 +1437,7 @@ The app requires these policies (defined in `manifest.json`):
 ```
 
 **Policy Descriptions**:
+
 - `outbound-access`: Allows HTTP requests to CleverTap APIs
 - `OMSViewer`: Read access to Order Management System
 - `ADMIN_DS`: Access to Master Data
@@ -1424,12 +1464,13 @@ export function handleEvents(e: PixelMessage) {
 }
 
 if (canUseDOM) {
-  initCleverTap()  // Initialize CleverTap SDK
-  window.addEventListener('message', handleEvents)  // Listen to VTEX events
+  initCleverTap() // Initialize CleverTap SDK
+  window.addEventListener('message', handleEvents) // Listen to VTEX events
 }
 ```
 
 **Flow**:
+
 1. Check if running in browser (`canUseDOM`)
 2. Initialize CleverTap SDK with stored configuration
 3. Add event listener for `window.postMessage` events
@@ -1442,21 +1483,21 @@ export function initCleverTap() {
   // 1. Retrieve configuration from localStorage
   const savedConfig = localStorage.getItem('clevertapConfigs')
   const config = JSON.parse(savedConfig)
-  
+
   // 2. Validate configuration
   if (!config?.accountID || !config?.region) {
     console.error('CleverTap: no valid configuration found.')
     return null
   }
-  
+
   // 3. Initialize CleverTap SDK
   clevertap.init(config.accountID, config.region)
   clevertap.privacy.push(config.privacy)
   clevertap.spa = config.spa
-  
+
   // 4. Configure push notifications
   initClevertapNotifications()
-  
+
   return clevertap
 }
 ```
@@ -1469,18 +1510,18 @@ export async function sendEnhancedEcommerceEvents(e: PixelMessage) {
     case 'vtex:productView': {
       // Wait for user data to load
       await new Promise(resolve => setTimeout(resolve, 500))
-      
+
       // Check permissions
       const isUnknownEvents = verifyIsUnknownEvents()
       const isLogged = verifyIsLogged()
-      
+
       if (!isUnknownEvents && !isLogged) return
-      
+
       // Check if event is enabled
       if (verifyEvent('vtex:productView')) {
         productView(e.data)
       }
-      
+
       break
     }
     // ... other cases
@@ -1496,7 +1537,7 @@ Example: Product View Event
 export function productView(data: any) {
   const { product } = data
   const item = product.items[0]
-  
+
   const eventData = {
     product_id: product.productId,
     sku_id: item.skuId,
@@ -1509,9 +1550,9 @@ export function productView(data: any) {
     url: window.location.href,
     image_url: item.imageUrl,
     seller_id: getSeller(item)?.sellerId,
-    seller_name: getSeller(item)?.sellerName
+    seller_name: getSeller(item)?.sellerName,
   }
-  
+
   clevertap.event.push('Product Viewed', eventData)
 }
 ```
@@ -1530,16 +1571,16 @@ const clients: ClientsConfig<Clients> = {
   options: {
     default: {
       retries: 2,
-      timeout: 800
-    }
-  }
+      timeout: 800,
+    },
+  },
 }
 
 export default new Service({
   clients,
   events: {
-    omsFilteredEvents  // Subscribe to OMS broadcasts
-  }
+    omsFilteredEvents, // Subscribe to OMS broadcasts
+  },
 })
 ```
 
@@ -1553,68 +1594,72 @@ export async function omsFilteredEvents(
   next: () => Promise<any>
 ) {
   const { orderId, currentState } = ctx.body
-  
+
   // 1. Deduplication check
   if (!processedOrders.has(orderId)) {
     processedOrders.set(orderId, new Set())
   }
-  
+
   const statesSet = processedOrders.get(orderId)
   if (statesSet.has(currentState)) return next()
-  
+
   statesSet.add(currentState)
-  
+
   // 2. Get settings
   const settings = await getConfig(ctx)
   const clevertap = await getCleverTap(ctx)
-  
+
   // 3. Fetch order data
   const response = await ctx.clients.oms.order(orderId, 'AUTH_TOKEN')
-  
+
   // 4. Fetch customer email from Master Data
   const mdResponse = await ctx.clients.MD.searchDocuments({
     dataEntity: 'CL',
     fields: ['email'],
-    where: `userId=${response.clientProfileData.userProfileId}`
+    where: `userId=${response.clientProfileData.userProfileId}`,
   })
-  
+
   // 5. Build event payload
   const payload = {
     order_id: orderId,
     state: currentState,
     value: response.value,
-    payment_method: getPaymentMethodsString(response.paymentData.transactions[0].payments),
+    payment_method: getPaymentMethodsString(
+      response.paymentData.transactions[0].payments
+    ),
     // ... more fields
   }
-  
+
   // 6. Map state to event name
   const eventMap = {
-    'canceled': { name: 'Order Cancelled' },
+    canceled: { name: 'Order Cancelled' },
     'payment-approved': { name: 'Charged' },
-    'incomplete': { name: 'Checkout Failed', includeItems: true },
-    'payment-denied': { name: 'Checkout Failed', includeItems: true }
+    incomplete: { name: 'Checkout Failed', includeItems: true },
+    'payment-denied': { name: 'Checkout Failed', includeItems: true },
   }
-  
+
   const event = eventMap[currentState]
-  
+
   // 7. Send to CleverTap
   if (event) {
     const data = {
       identity: mdResponse[0].email,
       type: 'event',
       evtName: event.name,
-      evtData: payload
+      evtData: payload,
     }
-    
+
     clevertap.upload([data])
   }
-  
+
   // 8. Check catalog sync
-  if (settings.preferences.catalogSync && 
-      settings.preferences.integrationEmail) {
+  if (
+    settings.preferences.catalogSync &&
+    settings.preferences.integrationEmail
+  ) {
     await handleCatalogSync(ctx, settings.preferences.integrationEmail)
   }
-  
+
   await next()
 }
 ```
@@ -1626,76 +1671,78 @@ export class CatalogService {
   private vtexCatalogClient: VtexCatalog
   private clevertapCatalogClient: ClevertapCatalog
   private pageSize = 20
-  
+
   public async syncCatalog(ctx: Context, options: SyncCatalogOptions) {
     try {
       // 1. Get all SKU IDs
       const skuIds = await this.getAllSkuIds()
       console.info(`Processed: ${skuIds.length} skus`)
-      
+
       // 2. Build CleverTap SKU objects
       const clevertapSkus = await this.buildClevertapSkus(skuIds)
-      
+
       // 3. Convert to CSV
       const csv = json2csv(clevertapSkus)
-      
+
       // 4. Get presigned S3 URL
-      const { presignedS3URL } = await this.clevertapCatalogClient.postCatalogUrl(ctx)
-      
+      const {
+        presignedS3URL,
+      } = await this.clevertapCatalogClient.postCatalogUrl(ctx)
+
       // 5. Upload CSV to S3
       await this.clevertapCatalogClient.uploadCatalog(csv, presignedS3URL, ctx)
-      
+
       // 6. Notify CleverTap
       await this.clevertapCatalogClient.completeUpload(presignedS3URL, ctx, {
         name: `catalog_${options.accountName}`,
         email: options.email,
         creator: options.creator,
-        replace: options.replace
+        replace: options.replace,
       })
-      
+
       console.info('Load completed')
     } catch (err) {
       console.error(`Error processing load: ${err}`)
       throw err
     }
   }
-  
+
   private async getAllSkuIds(): Promise<number[]> {
     const skuIds: number[] = []
     let page = 1
     let pageSkuIds: number[] = []
-    
+
     // Paginate through all SKUs
     do {
       pageSkuIds = await this.vtexCatalogClient.getSKUIds(page, this.pageSize)
       if (!pageSkuIds?.length) break
-      
+
       skuIds.push(...pageSkuIds)
       page++
     } while (pageSkuIds.length === this.pageSize)
-    
+
     return skuIds
   }
-  
+
   private async buildClevertapSkus(skuIds: number[]): Promise<any[]> {
     const clevertapSkus: any[] = []
-    
+
     for (const skuId of skuIds) {
       try {
         const skuData = await this.vtexCatalogClient.getSKUAndContext(skuId)
-        
+
         // Skip inactive SKUs
         if (!skuData.IsActive) continue
-        
+
         clevertapSkus.push(this.mapToClevertapSku(skuData))
       } catch (err) {
         console.error(`Error processing SKU ${skuId}: ${err}`)
       }
     }
-    
+
     return clevertapSkus
   }
-  
+
   private mapToClevertapSku(skuData: any) {
     return {
       Identity: skuData.Id,
@@ -1708,7 +1755,7 @@ export class CatalogService {
       Categories: Object.values(skuData.ProductCategories).join(' - '),
       BrandName: skuData.BrandName,
       SalesChannels: skuData.SalesChannels.join(','),
-      CommercialCondition: skuData.CommercialConditionId
+      CommercialCondition: skuData.CommercialConditionId,
     }
   }
 }
@@ -1727,29 +1774,29 @@ This script runs in the `<head>` of every page:
     let accountID = '{{settings.accountID}}'
     let region = '{{settings.region}}'
     let rawPrefs = '{{settings.preferences}}'
-    
+
     // Validate required fields
     if (!accountID || !region) {
       console.error('CleverTap: Missing configuration')
       return
     }
-    
+
     // Parse preferences
     let preferences = JSON.parse(decodeURIComponent(rawPrefs))
-    
+
     // Build configuration object
     const clevertapConfigs = {
       accountID,
       region,
       isLogged: false,
-      privacy: { optOut: false, useIP: false },
+      privacy: { optOut: false, useIP: true },
       spa: true,
       preferences: {
         allowUnknownUsersEvents: preferences.allowUnknownUsersEvents,
-        trackEvents: preferences.trackEvents
-      }
+        trackEvents: preferences.trackEvents,
+      },
     }
-    
+
     // Store in localStorage for React app
     localStorage.setItem('clevertapConfigs', JSON.stringify(clevertapConfigs))
   })()
@@ -1757,6 +1804,7 @@ This script runs in the `<head>` of every page:
 ```
 
 **Flow**:
+
 1. VTEX injects settings as template variables
 2. Parse and validate configuration
 3. Store in localStorage
@@ -1792,16 +1840,18 @@ This imports CleverTap's service worker for push notification handling.
 export function initClevertapNotifications() {
   clevertap.notifications.push({
     titleText: 'Would you like to receive Push Notifications?',
-    bodyText: 'We promise to only send you relevant content and give you updates on your transactions',
+    bodyText:
+      'We promise to only send you relevant content and give you updates on your transactions',
     okButtonText: 'Sign me up!',
     rejectButtonText: 'No thanks',
     okButtonColor: '#F28046',
-    serviceWorkerPath: '/serviceWorkerMerged.js'
+    serviceWorkerPath: '/serviceWorkerMerged.js',
   })
 }
 ```
 
 **Configuration Options**:
+
 - `titleText`: Permission prompt title
 - `bodyText`: Permission prompt description
 - `okButtonText`: Accept button text
@@ -1936,10 +1986,12 @@ export function initClevertapNotifications() {
 #### Issue 1: Events Not Appearing in CleverTap
 
 **Symptoms:**
+
 - No events in CleverTap dashboard
 - Console errors about CleverTap configuration
 
 **Diagnosis:**
+
 1. Check browser console for errors
 2. Verify localStorage contains `clevertapConfigs`
 3. Check if CleverTap SDK is loaded
@@ -1960,6 +2012,7 @@ localStorage.getItem('clevertapConfigs')
 ```
 
 **Checklist:**
+
 - [ ] App installed and configured in VTEX Admin
 - [ ] CleverTap Project ID is correct
 - [ ] CleverTap Region matches account
@@ -1969,10 +2022,12 @@ localStorage.getItem('clevertapConfigs')
 #### Issue 2: Checkout Events Missing
 
 **Symptoms:**
+
 - Storefront events work
 - Checkout events (Checkout Started, Payment Info) not tracked
 
 **Diagnosis:**
+
 1. Check if checkout script is installed
 2. Verify script URL is accessible
 3. Check browser console on checkout page
@@ -1980,6 +2035,7 @@ localStorage.getItem('clevertapConfigs')
 **Solutions:**
 
 1. **Verify Script Installation:**
+
 ```javascript
 // In checkout page console:
 document.querySelector('script[src*="clevertap-checkout-events"]')
@@ -1989,6 +2045,7 @@ document.querySelector('script[src*="clevertap-checkout-events"]')
 ```
 
 2. **Re-install Checkout Script:**
+
    - Go to Store Settings → Checkout → Code
    - Add the script as per installation instructions
    - Save and publish
@@ -2001,10 +2058,12 @@ document.querySelector('script[src*="clevertap-checkout-events"]')
 #### Issue 3: Catalog Not Syncing
 
 **Symptoms:**
+
 - Catalog events not appearing
 - Products not showing in CleverTap
 
 **Diagnosis:**
+
 1. Check if catalog sync is enabled
 2. Verify integration email is set
 3. Check logs in VTEX IO
@@ -2012,12 +2071,14 @@ document.querySelector('script[src*="clevertap-checkout-events"]')
 **Solutions:**
 
 1. **Enable Catalog Sync:**
+
    - Apps → My Apps → CleverTap
    - Enable "Active Catalog Sync"
    - Add valid Integration Email
    - Save settings
 
 2. **Check Sync Status:**
+
 ```bash
 # In VTEX IO CLI:
 vtex logs --all
@@ -2029,6 +2090,7 @@ vtex logs --all
 ```
 
 3. **Manual Trigger (if route enabled):**
+
 ```bash
 # POST request to catalog sync endpoint
 curl -X POST 'https://{workspace}--{account}.myvtex.com/_v/catalog/sync' \
@@ -2043,10 +2105,12 @@ curl -X POST 'https://{workspace}--{account}.myvtex.com/_v/catalog/sync' \
 #### Issue 4: User Profiles Not Updating
 
 **Symptoms:**
+
 - Events tracked but user data missing
 - Anonymous users tracked correctly but logged-in users not identified
 
 **Diagnosis:**
+
 1. Check if `vtex:userData` event is firing
 2. Verify Session API is accessible
 3. Check CleverTap profile in dashboard
@@ -2054,9 +2118,12 @@ curl -X POST 'https://{workspace}--{account}.myvtex.com/_v/catalog/sync' \
 **Solutions:**
 
 1. **Verify Session Data:**
+
 ```javascript
 // In browser console (while logged in):
-fetch('/api/sessions?items=profile.firstName,profile.lastName,profile.email,profile.phone')
+fetch(
+  '/api/sessions?items=profile.firstName,profile.lastName,profile.email,profile.phone'
+)
   .then(r => r.json())
   .then(console.log)
 
@@ -2064,14 +2131,15 @@ fetch('/api/sessions?items=profile.firstName,profile.lastName,profile.email,prof
 ```
 
 2. **Force Profile Update:**
+
 ```javascript
 // In browser console:
 const profile = {
   Site: {
-    Name: "Test User",
-    Email: "test@email.com",
-    Phone: "+1234567890"
-  }
+    Name: 'Test User',
+    Email: 'test@email.com',
+    Phone: '+1234567890',
+  },
 }
 clevertap.onUserLogin.push(profile)
 ```
@@ -2093,7 +2161,7 @@ clevertap.setLogLevel(3) // 0=off, 1=error, 2=info, 3=debug
 
 // View CleverTap internal state:
 clevertap.getAccountID() // Should return your account ID
-clevertap.getRegion()    // Should return your region
+clevertap.getRegion() // Should return your region
 ```
 
 #### Backend Logging
@@ -2135,11 +2203,13 @@ vtex logs --all | grep clevertap
 If experiencing high traffic:
 
 1. **Disable Unnecessary Events:**
+
    - Review tracking requirements
    - Disable events not used in campaigns
    - Example: Disable `Product Clicked` if only using `Product Viewed`
 
 2. **Sample Anonymous Users:**
+
 ```typescript
 // In enhancedEcommerceEvents.ts
 const isUnknownEvents = verifyIsUnknownEvents()
@@ -2157,21 +2227,25 @@ if (!isLogged && Math.random() > 0.5) return // Sample 50%
 #### Optimize Catalog Sync
 
 1. **Reduce Sync Frequency:**
+
 ```typescript
 // In omsFilteredEvents.ts
 // Change from 24 hours to 48 hours:
-if (hoursSince >= 48) {  // was 24
+if (hoursSince >= 48) {
+  // was 24
   await catalogSyncHandler(ctx)
 }
 ```
 
 2. **Filter Active SKUs Only:**
+
 ```typescript
 // Already implemented in buildClevertapSkus:
 if (!skuData.IsActive) continue
 ```
 
 3. **Increase Page Size:**
+
 ```typescript
 // In CatalogService.ts
 private pageSize = 50 // was 20
@@ -2182,11 +2256,13 @@ private pageSize = 50 // was 20
 #### Secure Credentials
 
 1. **Never Expose Passcode:**
+
    - Passcode only used in backend (Node.js)
    - Never send to frontend
    - Stored securely in app settings
 
 2. **Validate Input:**
+
 ```typescript
 // In catalogSyncHandler.ts
 if (!email || !email.includes('@')) {
@@ -2208,7 +2284,8 @@ const apiCalls = new Map<string, number>()
 
 function checkRateLimit(endpoint: string): boolean {
   const count = apiCalls.get(endpoint) || 0
-  if (count > 100) { // 100 calls per minute
+  if (count > 100) {
+    // 100 calls per minute
     return false
   }
   apiCalls.set(endpoint, count + 1)
@@ -2234,6 +2311,7 @@ vtex install clevertappartnerbr.vtex-clevertap-app@0.0.20
 #### Breaking Changes
 
 When upgrading, check for:
+
 - New required settings
 - Changed event names
 - Updated API endpoints
@@ -2261,44 +2339,44 @@ vtex install clevertappartnerbr.vtex-clevertap-app@0.0.19
 
 ### Storefront Events
 
-| Event Name | VTEX Trigger | CleverTap Name | Key Properties |
-|------------|--------------|----------------|----------------|
-| `vtex:search` | User performs search | Products Searched | `query`, `results_count` |
-| `vtex:filterManipulation` | Filter applied | Product Filtered | `filter_type`, `filter_value` |
-| `categoryView` | Category page view | Product List Viewed | `category`, `products` |
-| `vtex:promoView` | Promotion displayed | Promotion Viewed | `promo_id`, `promo_name` |
-| `vtex:promotionClick` | Promotion clicked | Promotion Clicked | `promo_id`, `promo_name` |
-| `vtex:productView` | Product page view | Product Viewed | `product_id`, `sku_id`, `name`, `price` |
-| `vtex:productClick` | Product clicked | Product Clicked | `product_id`, `position`, `list` |
-| `vtex:addToCart` | Add to cart | Product Added to Cart | `product_id`, `quantity`, `price` |
-| `vtex:removeFromCart` | Remove from cart | Product Removed from Cart | `product_id`, `quantity` |
-| `vtex:viewCart` | Cart viewed | Cart Viewed | `cart_total`, `items_count` |
-| `vtex:addToWishlist` | Add to wishlist | Product Added to Wishlist | `product_id`, `sku_id` |
-| `vtex:removeToWishlist` | Remove from wishlist | Product Removed from Wishlist | `product_id`, `sku_id` |
-| `vtex:share` | Product shared | Product Shared | `product_id`, `channel` |
-| `vtex:orderPlaced` | Order placed | Order Created | `order_id`, `value`, `items` |
+| Event Name                | VTEX Trigger         | CleverTap Name                | Key Properties                          |
+| ------------------------- | -------------------- | ----------------------------- | --------------------------------------- |
+| `vtex:search`             | User performs search | Products Searched             | `query`, `results_count`                |
+| `vtex:filterManipulation` | Filter applied       | Product Filtered              | `filter_type`, `filter_value`           |
+| `categoryView`            | Category page view   | Product List Viewed           | `category`, `products`                  |
+| `vtex:promoView`          | Promotion displayed  | Promotion Viewed              | `promo_id`, `promo_name`                |
+| `vtex:promotionClick`     | Promotion clicked    | Promotion Clicked             | `promo_id`, `promo_name`                |
+| `vtex:productView`        | Product page view    | Product Viewed                | `product_id`, `sku_id`, `name`, `price` |
+| `vtex:productClick`       | Product clicked      | Product Clicked               | `product_id`, `position`, `list`        |
+| `vtex:addToCart`          | Add to cart          | Product Added to Cart         | `product_id`, `quantity`, `price`       |
+| `vtex:removeFromCart`     | Remove from cart     | Product Removed from Cart     | `product_id`, `quantity`                |
+| `vtex:viewCart`           | Cart viewed          | Cart Viewed                   | `cart_total`, `items_count`             |
+| `vtex:addToWishlist`      | Add to wishlist      | Product Added to Wishlist     | `product_id`, `sku_id`                  |
+| `vtex:removeToWishlist`   | Remove from wishlist | Product Removed from Wishlist | `product_id`, `sku_id`                  |
+| `vtex:share`              | Product shared       | Product Shared                | `product_id`, `channel`                 |
+| `vtex:orderPlaced`        | Order placed         | Order Created                 | `order_id`, `value`, `items`            |
 
 ### Checkout Events (via Script)
 
-| Event Name | Trigger | CleverTap Name | Key Properties |
-|------------|---------|----------------|----------------|
-| `add_to_cart` | Add in checkout | Checkout Product Added To Cart | `product_id`, `quantity` |
-| `remove_from_cart` | Remove in checkout | Checkout Product Removed From Cart | `product_id`, `quantity` |
-| `view_cart` | Cart viewed in checkout | Checkout Cart Viewed | `cart_total`, `items` |
-| `begin_checkout` | Checkout started | Checkout Started | `cart_total`, `items_count` |
-| `add_payment_info` | Payment method selected | Payment Info | `payment_method` |
-| `checkout_step_viewed` | Step viewed | Checkout Step Viewed | `step`, `step_name` |
-| `coupon_applied` | Coupon success | Coupon Applied | `coupon_code`, `discount` |
-| `coupon_denied` | Coupon failed | Coupon Denied | `coupon_code`, `reason` |
+| Event Name             | Trigger                 | CleverTap Name                     | Key Properties              |
+| ---------------------- | ----------------------- | ---------------------------------- | --------------------------- |
+| `add_to_cart`          | Add in checkout         | Checkout Product Added To Cart     | `product_id`, `quantity`    |
+| `remove_from_cart`     | Remove in checkout      | Checkout Product Removed From Cart | `product_id`, `quantity`    |
+| `view_cart`            | Cart viewed in checkout | Checkout Cart Viewed               | `cart_total`, `items`       |
+| `begin_checkout`       | Checkout started        | Checkout Started                   | `cart_total`, `items_count` |
+| `add_payment_info`     | Payment method selected | Payment Info                       | `payment_method`            |
+| `checkout_step_viewed` | Step viewed             | Checkout Step Viewed               | `step`, `step_name`         |
+| `coupon_applied`       | Coupon success          | Coupon Applied                     | `coupon_code`, `discount`   |
+| `coupon_denied`        | Coupon failed           | Coupon Denied                      | `coupon_code`, `reason`     |
 
 ### Backend Events (OMS)
 
-| OMS State | CleverTap Event | Description |
-|-----------|-----------------|-------------|
-| `payment-approved` | Charged | Payment successful, order confirmed |
-| `canceled` | Order Cancelled | Order cancelled by user or system |
-| `incomplete` | Checkout Failed | Order incomplete or abandoned |
-| `payment-denied` | Checkout Failed | Payment declined |
+| OMS State          | CleverTap Event | Description                         |
+| ------------------ | --------------- | ----------------------------------- |
+| `payment-approved` | Charged         | Payment successful, order confirmed |
+| `canceled`         | Order Cancelled | Order cancelled by user or system   |
+| `incomplete`       | Checkout Failed | Order incomplete or abandoned       |
+| `payment-denied`   | Checkout Failed | Payment declined                    |
 
 ---
 
@@ -2385,21 +2463,21 @@ vtex install clevertappartnerbr.vtex-clevertap-app@0.0.19
 
 ### CleverTap APIs
 
-| Endpoint | Method | Purpose |
-|----------|--------|---------|
-| `/{region}.api.clevertap.com/1/upload` | POST | Upload events and profiles |
-| `/{region}.api.clevertap.com/get_catalog_url` | POST | Get presigned S3 URL for catalog |
-| `/{region}.api.clevertap.com/upload_catalog_completed` | POST | Notify catalog upload complete |
+| Endpoint                                               | Method | Purpose                          |
+| ------------------------------------------------------ | ------ | -------------------------------- |
+| `/{region}.api.clevertap.com/1/upload`                 | POST   | Upload events and profiles       |
+| `/{region}.api.clevertap.com/get_catalog_url`          | POST   | Get presigned S3 URL for catalog |
+| `/{region}.api.clevertap.com/upload_catalog_completed` | POST   | Notify catalog upload complete   |
 
 ### VTEX APIs Used
 
-| API | Endpoint | Purpose |
-|-----|----------|---------|
-| OMS | `/api/oms/pvt/orders/{orderId}` | Get order details |
-| Catalog | `/api/catalog_system/pvt/sku/stockkeepingunitids` | Get SKU IDs |
-| Catalog | `/api/catalog_system/pvt/sku/stockkeepingunitbyid/{id}` | Get SKU details |
-| Master Data | `/api/dataentities/CL/search` | Search customer data |
-| Session | `/api/sessions` | Get user profile data |
+| API         | Endpoint                                                | Purpose               |
+| ----------- | ------------------------------------------------------- | --------------------- |
+| OMS         | `/api/oms/pvt/orders/{orderId}`                         | Get order details     |
+| Catalog     | `/api/catalog_system/pvt/sku/stockkeepingunitids`       | Get SKU IDs           |
+| Catalog     | `/api/catalog_system/pvt/sku/stockkeepingunitbyid/{id}` | Get SKU details       |
+| Master Data | `/api/dataentities/CL/search`                           | Search customer data  |
+| Session     | `/api/sessions`                                         | Get user profile data |
 
 ---
 
