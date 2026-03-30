@@ -48,9 +48,6 @@ export async function sendEnhancedEcommerceEvents(e: PixelMessage) {
       // Delay required to ensure the vtex:userData event is trigered
       await new Promise(resolve => setTimeout(resolve, 500))
 
-      // Delay required to ensure the vtex:userData event is trigered
-      await new Promise(resolve => setTimeout(resolve, 500))
-
       const isUnknownEvents = verifyIsUnknownEvents()
       const isLogged = verifyIsLogged()
 
@@ -212,7 +209,7 @@ export async function sendEnhancedEcommerceEvents(e: PixelMessage) {
 
       if (!isUnknownEvents && !isLogged) return
 
-      if (verifyEvent('vtex:share')) share(e.data)
+      if (verifyEvent('vtex:share')) await share(e.data)
 
       break
     }

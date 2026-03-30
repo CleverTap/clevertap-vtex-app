@@ -25,6 +25,7 @@ export function initCleverTap() {
   clevertap.spa = config.spa
 
   initClevertapNotifications()
+  initClevertapLocation(config.privacy.useIP)
 
   return clevertap
 }
@@ -128,6 +129,7 @@ export async function initClevertapProfile(): Promise<boolean> {
         Name: profile.name,
         Email: profile.email,
         Phone: profile.phone,
+        Gender: profile.gender,
         'MSG-email': false,
         'MSG-push': true,
         'MSG-sms': true,
@@ -155,10 +157,20 @@ export function initClevertapNotifications() {
   })
 }
 
+export function initClevertapLocation(useIP: boolean) {
+  if (useIP) {
+    navigator.geolocation.getCurrentPosition(position => {
+      const { latitude, longitude } = position.coords
+
+      clevertap.getLocation(latitude, longitude)
+    })
+  }
+}
+
 export async function fetchProfileSession(): Promise<CleverTapProfile | null> {
   try {
     const res = await fetch(
-      '/api/sessions?items=profile.firstName,profile.lastName,profile.email,profile.phone'
+      '/api/sessions?items=profile.firstName,profile.lastName,profile.email,profile.phone,profile.gender'
     )
 
     if (!res.ok) {
@@ -180,6 +192,7 @@ export async function fetchProfileSession(): Promise<CleverTapProfile | null> {
       name,
       email: namespaces?.email?.value ?? undefined,
       phone: namespaces?.phone?.value ?? undefined,
+      gender: namespaces?.gender?.value ?? undefined,
     }
 
     return profile
@@ -191,5 +204,5 @@ export async function fetchProfileSession(): Promise<CleverTapProfile | null> {
 }
 
 export function pushEvent(eventName: string, data: Record<string, unknown>) {
-  clevertap.event.push(eventName, { ...data, ct_source: 'vtex' })
+  clevertap.event.push(eventName, { ...data, 'CT Source': 'vtex' })
 }
