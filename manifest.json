@@ -7,7 +7,8 @@
   "billingOptions": {
     "termsURL": "https://compliance.vtex.com/gdpr/policies/vtex-privacy-policy",
     "support": {
-      "url": "https://support.vtex.com/hc/requests"
+      "email": "manish.kumar@clevertap.com",
+      "url": "https://docs.clevertap.com/docs/support-ticket"
     },
     "free": true,
     "type": "free",
