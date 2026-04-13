@@ -1,7 +1,7 @@
 {
   "name": "vtex-clevertap-app",
   "vendor": "clevertappartnerbr",
-  "version": "0.0.27",
+  "version": "0.0.30",
   "title": "VTEX CleverTap pixel app",
   "description": "VTEX app for CleverTap integration, enabling event tracking, campaign management, and catalog synchronization with CleverTap.",
   "billingOptions": {
@@ -50,6 +50,13 @@
     {
       "name": "outbound-access",
       "attrs": {
+        "host": "sk1.api.clevertap.com",
+        "path": "/*"
+      }
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
         "host": "us1.api.clevertap.com",
         "path": "/*"
       }
@@ -71,6 +78,13 @@
     {
       "name": "outbound-access",
       "attrs": {
+        "host": "eu1-sharedresources-platformstorages3bucket-np5wb2kjrbki.s3.eu-west-1.amazonaws.com",
+        "path": "/*"
+      }
+    },
+    {
+      "name": "outbound-access",
+      "attrs": {
         "host": "us1-sharedresources-platformstorages3bucket-7uuj7y1r2ute.s3.us-west-2.amazonaws.com",
         "path": "/*"
       }
@@ -78,42 +92,35 @@
     {
       "name": "outbound-access",
       "attrs": {
-        "host": "sg1-sharedresources-platformstorages3bucket-ybaqypxq31zd",
+        "host": "sg1-sharedresources-platformstorages3bucket-ybaqypxq31zd.s3.ap-southeast-1.amazonaws.com",
         "path": "/*"
       }
     },
     {
       "name": "outbound-access",
       "attrs": {
-        "host": "aps3-sharedresources-platformstorages3bucket-1oe9x37p5twuu",
+        "host": "aps3-sharedresources-platformstorages3bucket-1oe9x37p5twuu.s3.ap-southeast-3.amazonaws.com",
         "path": "/*"
       }
     },
     {
       "name": "outbound-access",
       "attrs": {
-        "host": "mec1-sharedresources-platformstorages3bucket-11ei3kke7jbmx",
+        "host": "mec1-sharedresources-platformstorages3bucket-11ei3kke7jbmx.s3.me-central-1.amazonaws.com",
         "path": "/*"
       }
     },
     {
       "name": "outbound-access",
       "attrs": {
-        "host": "in1-sharedresources-platformstorages3bucket-1otq9lflos3e",
+        "host": "in1-sharedresources-platformstorages3bucket-1otq9lflos3e.s3.ap-south-1.amazonaws.com",
         "path": "/*"
       }
     },
     {
       "name": "outbound-access",
       "attrs": {
-        "host": "eu1-sharedresources-platformstorages3bucket-np5wb2kjrbki",
-        "path": "/*"
-      }
-    },
-    {
-      "name": "outbound-access",
-      "attrs": {
-        "host": "sk1-sharedresources-platformstorages3bucket-8d8zxzdp3wsj",
+        "host": "sk1-sharedresources-platformstorages3bucket-8d8zxzdp3wsj.s3.ap-northeast-2.amazonaws.com",
         "path": "/*"
       }
     },
