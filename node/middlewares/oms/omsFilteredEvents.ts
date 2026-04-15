@@ -191,28 +191,13 @@ async function handleCatalogSync(
 }
 
 async function getLastCatalogSync(vbaseClient: VBase) {
-  let lastCatalogSync = ''
-  const now = new Date().toISOString()
-
   try {
-    lastCatalogSync = await vbaseClient.getJSON<string>(
-      'config',
-      'lastCatalogSync'
-    )
+    return await vbaseClient.getJSON<string>('config', 'lastCatalogSync')
   } catch (error) {
-    const errorString = error.toString()
-
-    if (errorString === 'Error: Request failed with status code 404') {
-      await vbaseClient.saveJSON('config', 'lastCatalogSync', now)
-
-      lastCatalogSync = await vbaseClient.getJSON<string>(
-        'config',
-        'lastCatalogSync'
-      )
-    } else {
-      throw error
+    if (error?.response?.status === 404) {
+      return ''
     }
-  }
 
-  return lastCatalogSync
+    throw error
+  }
 }

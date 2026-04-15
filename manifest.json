@@ -1,7 +1,7 @@
 {
   "name": "vtex-clevertap-app",
   "vendor": "clevertappartnerbr",
-  "version": "0.0.32",
+  "version": "0.0.33",
   "title": "CleverTap",
   "description": "VTEX app for CleverTap integration, enabling event tracking, campaign management, and catalog synchronization with CleverTap.",
   "billingOptions": {
