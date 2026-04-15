@@ -10,6 +10,7 @@ import { Clients } from './clients'
 import { omsFilteredEvents } from './middlewares/oms/omsFilteredEvents'
 
 const TIMEOUT_MS = 800
+const CATALOG_TIMEOUT_MS = 10000
 
 // Create a LRU memory cache for the Status client.
 // The @vtex/api HttpClient respects Cache-Control headers and uses the provided cache.
@@ -30,6 +31,14 @@ const clients: ClientsConfig<Clients> = {
     // This key will be merged with the default options and add this cache to our Status client.
     status: {
       memoryCache,
+    },
+    vtexCatalog: {
+      retries: 2,
+      timeout: CATALOG_TIMEOUT_MS,
+    },
+    clevertapCatalog: {
+      retries: 2,
+      timeout: CATALOG_TIMEOUT_MS,
     },
   },
 }

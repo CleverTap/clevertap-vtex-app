@@ -6,7 +6,8 @@ export async function errorMiddleware(ctx: Context, next: () => Promise<any>) {
       vtex: { logger },
     } = ctx
 
-    const status = err.status || err.statusCode || err.response.data.code || 500
+    const status =
+      err.status || err.statusCode || err.response?.data?.code || 500
 
     ctx.status = status
 
