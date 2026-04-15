@@ -12,7 +12,7 @@ type MdUser = { email: string }
 
 const processedOrders = new Map<string, Set<string>>()
 // Local/dev helper: run catalog sync without waiting 24h (0.001h ~= 3.6s).
-const catalogSyncIntervalHours = 0.001
+const catalogSyncIntervalHours = 0.05
 
 export async function omsFilteredEvents(
   ctx: StatusChangeContext,
