@@ -5,4 +5,5 @@ export const CLEVERTAP_REGIONS: Record<string, string> = {
   US: 'us1',
   INDONESIA: 'aps3',
   MIDDLEEAST: 'mec1',
+  SK: 'sk1',
 }
