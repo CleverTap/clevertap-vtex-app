@@ -6,7 +6,7 @@ export async function catalogSyncHandler(ctx: Context) {
 
   const service = new CatalogService(ctx)
 
-  service.syncCatalog(ctx, {
+  await service.syncCatalog(ctx, {
     accountName: account,
     email,
     creator,

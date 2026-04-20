@@ -28,11 +28,15 @@ export class CatalogService {
 
     try {
       const skuIds = await this.getAllSkuIds()
-
-      logger.info(`Processed: ${skuIds.length} skus`)
-      console.info(`Processed: ${skuIds.length} skus`)
-
       const clevertapSkus = await this.buildClevertapSkus(ctx, skuIds)
+
+      logger.info(
+        `Processed: ${skuIds.length} total skus, ${clevertapSkus.length} active`
+      )
+      console.info(
+        `Processed: ${skuIds.length} total skus, ${clevertapSkus.length} active`
+      )
+
       const csv = json2csv(clevertapSkus)
 
       const {
@@ -51,8 +55,10 @@ export class CatalogService {
       logger.info(`Load completed`)
       console.info(`Load completed`)
     } catch (err) {
-      logger.error(`Error processing load: ${err}`)
-      console.error(`Error processing load: ${err}`)
+      const detail = err?.response?.data ?? err?.message ?? err
+
+      logger.error(`Error processing load: ${JSON.stringify(detail)}`)
+      console.error(`Error processing load: ${JSON.stringify(detail)}`)
       throw err
     }
   }
@@ -104,7 +110,7 @@ export class CatalogService {
 
   private mapToClevertapSku(skuData: any) {
     return {
-      Identity: skuData.Id,
+      Identity: String(skuData.Id),
       ProductId: skuData.ProductId,
       SkuId: skuData.Id,
       Ean: skuData.AlternateIds.Ean,

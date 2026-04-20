@@ -110,7 +110,7 @@ export async function omsFilteredEvents(
       evtData,
     } as UploadData
 
-    clevertap.upload([data])
+    await clevertap.upload([data])
 
     if (catalogSync && integrationEmail?.trim().length > 0) {
       await handleCatalogSync(ctx, vbaseClient, integrationEmail)
@@ -145,12 +145,12 @@ async function handleCatalogSync(
 
     const hoursSince = (Date.now() - lastRun) / 1000 / 60 / 60
 
-    if (hoursSince >= catalogSyncIntervalHours) {
+    if (hoursSince >= 24) {
       logger.info(
-        `[OMS] ${catalogSyncIntervalHours}h passed, running catalog sync...`
+        `[OMS] ${hoursSince.toFixed(2)}h passed, running catalog sync...`
       )
       console.info(
-        `[OMS] ${catalogSyncIntervalHours}h passed, running catalog sync...`
+        `[OMS] ${hoursSince.toFixed(2)}h passed, running catalog sync...`
       )
 
       const newCtx = ({
@@ -191,13 +191,22 @@ async function handleCatalogSync(
 }
 
 async function getLastCatalogSync(vbaseClient: VBase) {
-  try {
-    return await vbaseClient.getJSON<string>('config', 'lastCatalogSync')
-  } catch (error) {
-    if (error?.response?.status === 404) {
-      return ''
-    }
+  let lastCatalogSync = ''
 
-    throw error
+  try {
+    lastCatalogSync = await vbaseClient.getJSON<string>(
+      'config',
+      'lastCatalogSync'
+    )
+  } catch (error) {
+    const errorString = error.toString()
+
+    if (errorString === 'Error: Request failed with status code 404') {
+      lastCatalogSync = new Date(0).toISOString()
+    } else {
+      throw error
+    }
   }
+
+  return lastCatalogSync
 }
