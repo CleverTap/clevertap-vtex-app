@@ -11,8 +11,6 @@ import { getConfig } from '../../lib/clevertap/getConfig'
 type MdUser = { email: string }
 
 const processedOrders = new Map<string, Set<string>>()
-// Local/dev helper: run catalog sync without waiting 24h (0.001h ~= 3.6s).
-const catalogSyncIntervalHours = 0.05
 
 export async function omsFilteredEvents(
   ctx: StatusChangeContext,
@@ -145,7 +143,7 @@ async function handleCatalogSync(
 
     const hoursSince = (Date.now() - lastRun) / 1000 / 60 / 60
 
-    if (hoursSince >= 24) {
+    if (hoursSince >= 0.05) {
       logger.info(
         `[OMS] ${hoursSince.toFixed(2)}h passed, running catalog sync...`
       )
