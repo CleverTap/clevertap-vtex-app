@@ -8,7 +8,6 @@ interface SyncCatalogOptions {
   accountName: string
   email: string
   creator: string
-  replace: boolean
 }
 
 export class CatalogService {
@@ -41,12 +40,29 @@ export class CatalogService {
 
       await this.clevertapCatalogClient.uploadCatalog(csv, presignedS3URL, ctx)
 
-      await this.clevertapCatalogClient.completeUpload(presignedS3URL, ctx, {
-        name: `catalog_${options.accountName}`,
-        email: options.email,
-        creator: options.creator,
-        replace: options.replace,
-      })
+      const catalogName = `catalog_${options.accountName}`
+
+      try {
+        await this.clevertapCatalogClient.completeUpload(presignedS3URL, ctx, {
+          name: catalogName,
+          email: options.email,
+          creator: options.creator,
+          replace: true,
+        })
+      } catch (replaceErr) {
+        const errMsg = replaceErr?.response?.data?.error ?? ''
+
+        if (!errMsg.includes('No Catalog with given name exists')) {
+          throw replaceErr
+        }
+
+        await this.clevertapCatalogClient.completeUpload(presignedS3URL, ctx, {
+          name: catalogName,
+          email: options.email,
+          creator: options.creator,
+          replace: false,
+        })
+      }
 
       logger.info(`Load completed`)
       console.info(`Load completed`)

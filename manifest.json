@@ -1,8 +1,8 @@
 {
   "name": "vtex-clevertap-app",
   "vendor": "clevertappartnerbr",
-  "version": "0.0.30",
-  "title": "VTEX CleverTap pixel app",
+  "version": "0.0.37",
+  "title": "CleverTap",
   "description": "VTEX app for CleverTap integration, enabling event tracking, campaign management, and catalog synchronization with CleverTap.",
   "billingOptions": {
     "termsURL": "https://compliance.vtex.com/gdpr/policies/vtex-privacy-policy",
@@ -11,7 +11,9 @@
     },
     "free": true,
     "type": "free",
-    "availableCountries": ["*"]
+    "availableCountries": [
+      "*"
+    ]
   },
   "builders": {
     "node": "6.x",
@@ -162,6 +164,9 @@
     },
     {
       "name": "vbase-read-write"
+    },
+    {
+      "name": "Sku.aspx"
     }
   ],
   "settingsSchema": {

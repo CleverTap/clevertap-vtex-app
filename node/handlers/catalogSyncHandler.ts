@@ -2,7 +2,7 @@ import { CatalogService } from '../services/CatalogService'
 
 export async function catalogSyncHandler(ctx: Context) {
   const { account } = ctx.vtex
-  const { email, creator, replace } = ctx.body
+  const { email, creator } = ctx.body
 
   const service = new CatalogService(ctx)
 
@@ -10,7 +10,6 @@ export async function catalogSyncHandler(ctx: Context) {
     accountName: account,
     email,
     creator,
-    replace,
   })
 
   ctx.status = 200
