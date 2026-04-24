@@ -1,9 +1,10 @@
 import { json } from 'co-body'
 
+import { getConfig } from '../../lib/clevertap/getConfig'
+
 interface CatalogSyncBody {
-  email: string
-  creator: string
-  replace: boolean
+  email?: string
+  creator?: string
 }
 
 export async function validateCatalogSync(
@@ -14,27 +15,21 @@ export async function validateCatalogSync(
     vtex: { logger },
   } = ctx
 
-  const body = await json(ctx.req)
+  const body = (await json(ctx.req)) as CatalogSyncBody | null
 
-  if (!body) {
+  const settings = await getConfig(ctx)
+  const email = body?.email?.trim() || settings?.preferences?.integrationEmail
+  const creator = body?.creator?.trim() || settings?.accountID
+
+  if (!email || !creator) {
     ctx.status = 400
-    ctx.body = { error: 'Body is required' }
+    ctx.body = { error: 'Missing email or creator: provide them in the request body or configure integrationEmail and accountID in app settings' }
 
-    logger.error('400: Body is required')
-    ctx.throw(400, 'Body is required')
+    logger.error('400: Missing email or creator for catalog sync')
+    ctx.throw(400, 'Missing email or creator')
   }
 
-  const { email, creator, replace } = body as CatalogSyncBody
-
-  if (!email?.trim() || !creator?.trim() || replace === undefined) {
-    ctx.status = 400
-    ctx.body = { error: 'Missing required fields' }
-
-    logger.error('400: Missing required fields')
-    ctx.throw(400, 'Missing required fields')
-  }
-
-  ctx.body = { email, creator, replace }
+  ctx.body = { email, creator }
 
   await next()
 }
