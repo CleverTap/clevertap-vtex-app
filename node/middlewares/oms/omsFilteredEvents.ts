@@ -9,8 +9,6 @@ import { getPaymentMethodsString } from '../../utils/get-payment-method'
 import { getTotal } from '../../utils/get-total'
 import { normalizeItems } from '../../utils/normalize-items'
 
-interface MdUser { email: string }
-
 const MIN_INTERVAL_MINUTES = 1440
 
 export async function omsFilteredEvents(
@@ -18,7 +16,7 @@ export async function omsFilteredEvents(
   next: () => Promise<any>
 ) {
   const {
-    clients: { oms: omsClient, MD: mdClient },
+    clients: { oms: omsClient },
     body,
   } = ctx
 
@@ -59,16 +57,7 @@ export async function omsFilteredEvents(
     coupon: response.marketingData?.coupon || '',
   }
 
-  const { userProfileId } = response.clientProfileData
-
-  const mdResponse: MdUser[] = await mdClient.searchDocuments({
-    dataEntity: 'CL',
-    fields: ['email'],
-    where: `userId=${userProfileId}`,
-    pagination: { page: 1, pageSize: 1 },
-  })
-
-  const identity = mdResponse[0]?.email || ''
+  const identity = response.clientProfileData.email || ''
 
   const eventMap: Record<string, { name: string; includeItems?: boolean }> = {
     canceled: { name: 'Order Cancelled' },
