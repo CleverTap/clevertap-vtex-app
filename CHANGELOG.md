@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.0.39] - 2026-05-04
+
+### Added
+
+- Track storefront `Page Viewed` events. Fires on home, search, empty-search, and product pages with a `pageType` discriminator (`home` / `search` / `empty_search` / `product`). Search variants also include `searchTerm` and `searchResultsCount`. Toggleable per-merchant under admin → Preferences → Page Viewed (default on).
+
 ## [0.0.38] - 2026-05-04
 
 ### Fixed
