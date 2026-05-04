@@ -28,6 +28,8 @@ $RECYCLE.BIN/
 # App specific
 node_modules/
 docs/_book/
+docs/kt/
+ARCHITECTURE.md
 .tmp
 .idea
 npm-debug.log
