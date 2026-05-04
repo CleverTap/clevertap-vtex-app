@@ -120,6 +120,35 @@ export function categoryView(
   pushEvent(eventName, data)
 }
 
+type PageType = 'home' | 'search' | 'empty_search' | 'product'
+
+export function pageView(
+  pageType: PageType,
+  eventData: HomePageInfo | ProductPageInfoData | SearchPageInfoData
+) {
+  const { pageTitle, pageUrl } = eventData
+
+  const data: Record<string, unknown> = {
+    pageType,
+    pageTitle,
+    pageUrl,
+  }
+
+  if (pageType === 'search' || pageType === 'empty_search') {
+    const { search } = eventData as SearchPageInfoData
+
+    if (search?.term) {
+      data.searchTerm = search.term
+    }
+
+    if (typeof search?.results === 'number') {
+      data.searchResultsCount = search.results
+    }
+  }
+
+  pushEvent('Page Viewed', data)
+}
+
 export function promoView(eventData: PromoViewData) {
   const eventName = 'Promotion Viewed'
 

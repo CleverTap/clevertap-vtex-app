@@ -5,6 +5,7 @@
 | vtex:search                | Products Searched            |
 | vtex:filterManipulation    | Product Filtered             |
 | vtex:pageInfo / categoryView | Product List Viewed        |
+| vtex:pageInfo / homeView, internalSiteSearchView, emptySearchView, productPageInfo | Page Viewed |
 | vtex:promoView             | Promotion Viewed             |
 | vtex:promotionClick        | Promotion Clicked            |
 | vtex:productClick          | Product Clicked              |
