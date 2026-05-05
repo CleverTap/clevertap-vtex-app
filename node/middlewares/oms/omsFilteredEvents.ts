@@ -1,23 +1,22 @@
+import type { Logger, VBase } from '@vtex/api'
 import type { UploadData } from 'clevertap'
-import type { VBase } from '@vtex/api'
 
 import { getCleverTap } from '../../lib/clevertap'
+import { getConfig } from '../../lib/clevertap/getConfig'
+import { acquireLock, releaseLock } from '../../lib/syncState'
+import { CatalogService } from '../../services/CatalogService'
 import { getPaymentMethodsString } from '../../utils/get-payment-method'
 import { getTotal } from '../../utils/get-total'
 import { normalizeItems } from '../../utils/normalize-items'
-import { catalogSyncHandler } from '../../handlers/catalogSyncHandler'
-import { getConfig } from '../../lib/clevertap/getConfig'
 
-type MdUser = { email: string }
-
-const processedOrders = new Map<string, Set<string>>()
+const MIN_INTERVAL_MINUTES = 1440
 
 export async function omsFilteredEvents(
   ctx: StatusChangeContext,
   next: () => Promise<any>
 ) {
   const {
-    clients: { oms: omsClient, MD: mdClient, vbase: vbaseClient },
+    clients: { oms: omsClient },
     body,
   } = ctx
 
@@ -25,30 +24,19 @@ export async function omsFilteredEvents(
 
   const { orderId, currentState } = body
 
-  if (!orderId || !currentState || !settings) return
-
-  if (!processedOrders.has(orderId)) {
-    processedOrders.set(orderId, new Set())
-  }
-
-  const statesSet = processedOrders.get(orderId)
-
-  if (!statesSet) return
-
-  if (statesSet.has(currentState)) return next()
-
-  statesSet.add(currentState)
+  if (!orderId || !currentState || !settings) { return }
 
   const clevertap = await getCleverTap(ctx)
+
+  if (!clevertap) { return }
+
   const response = await omsClient.order(orderId, 'AUTH_TOKEN')
-  const { preferences } = settings
+  const { preferences, accountID } = settings
   const {
     catalogSync,
     integrationEmail,
     useChargeEventOnlyWhenOrderApproved,
   } = preferences
-
-  if (!clevertap) return
 
   const paymentMethod = getPaymentMethodsString(
     response.paymentData.transactions[0].payments
@@ -69,16 +57,7 @@ export async function omsFilteredEvents(
     coupon: response.marketingData?.coupon || '',
   }
 
-  const { userProfileId } = response.clientProfileData
-
-  const mdResponse: MdUser[] = await mdClient.searchDocuments({
-    dataEntity: 'CL',
-    fields: ['email'],
-    where: `userId=${userProfileId}`,
-    pagination: { page: 1, pageSize: 1 },
-  })
-
-  const identity = mdResponse[0].email || ''
+  const identity = response.clientProfileData.email || ''
 
   const eventMap: Record<string, { name: string; includeItems?: boolean }> = {
     canceled: { name: 'Order Cancelled' },
@@ -110,101 +89,76 @@ export async function omsFilteredEvents(
 
     await clevertap.upload([data])
 
-    if (catalogSync && integrationEmail?.trim().length > 0) {
-      await handleCatalogSync(ctx, vbaseClient, integrationEmail)
+    if (catalogSync && integrationEmail?.trim().length > 0 && accountID) {
+      await triggerCatalogSyncAsync(ctx, {
+        accountName: ctx.vtex.account,
+        creator: accountID,
+        email: integrationEmail,
+      })
     }
   }
 
   await next()
 }
 
-async function handleCatalogSync(
+interface CatalogSyncOptions {
+  accountName: string
+  email: string
+  creator: string
+}
+
+async function triggerCatalogSyncAsync(
   ctx: StatusChangeContext,
-  vbaseClient: VBase,
-  integrationEmail: string
+  options: CatalogSyncOptions
 ) {
   const {
+    clients: { vbase },
     vtex: { logger },
   } = ctx
 
-  const now = new Date().toISOString()
+  const handle = await acquireLock(vbase, MIN_INTERVAL_MINUTES).catch(err => {
+    logger.error(`[OMS] acquireLock failed: ${err?.message ?? err}`)
 
-  const baseBody = {
-    email: integrationEmail,
-    creator: integrationEmail,
+    return null
+  })
+
+  if (!handle) {
+    logger.info('[OMS] Catalog sync skipped (recent or in progress)')
+
+    return
   }
 
-  try {
-    const lastCatalogSync = await getLastCatalogSync(vbaseClient)
+  logger.info('[OMS] Catalog sync lock acquired, starting in background')
 
-    const lastRun = lastCatalogSync?.trim()
-      ? new Date(lastCatalogSync).getTime()
-      : 0
-
-    const hoursSince = (Date.now() - lastRun) / 1000 / 60 / 60
-
-    if (hoursSince >= 0.05) {
-      logger.info(
-        `[OMS] ${hoursSince.toFixed(2)}h passed, running catalog sync...`
-      )
-      console.info(
-        `[OMS] ${hoursSince.toFixed(2)}h passed, running catalog sync...`
-      )
-
-      const newCtx = ({
-        ...ctx,
-        body: {
-          ...baseBody,
-          replace: true,
-        },
-      } as unknown) as Context
-
-      await catalogSyncHandler(newCtx)
-
-      await vbaseClient.saveJSON('config', 'lastCatalogSync', now)
-    }
-  } catch (error) {
-    // console.info(error)
-
-    const noCatalog =
-      error.response.data.error ===
-      'No Catalog with given name exists for replacement'
-
-    if (noCatalog) {
-      const retryCtx = ({
-        ...ctx,
-        body: {
-          ...baseBody,
-          replace: false,
-        },
-      } as unknown) as Context
-
-      await catalogSyncHandler(retryCtx)
-
-      await vbaseClient.saveJSON('config', 'lastCatalogSync', now)
-    } else {
-      throw error
-    }
-  }
+  runCatalogSyncInBackground(ctx, options, handle, vbase, logger)
 }
 
-async function getLastCatalogSync(vbaseClient: VBase) {
-  let lastCatalogSync = ''
+function runCatalogSyncInBackground(
+  ctx: StatusChangeContext,
+  options: CatalogSyncOptions,
+  handle: { lockId: string },
+  vbase: VBase,
+  logger: Logger
+) {
+  const syncCtx = (ctx as unknown) as Context
+  const service = new CatalogService(syncCtx)
 
-  try {
-    lastCatalogSync = await vbaseClient.getJSON<string>(
-      'config',
-      'lastCatalogSync'
-    )
-  } catch (error) {
-    const errorString = error.toString()
-
-    if (errorString === 'Error: Request failed with status code 404') {
-      lastCatalogSync = new Date(0).toISOString()
-    } else {
-      throw error
-    }
-  }
-
-  return lastCatalogSync
+  service
+    .syncCatalog(syncCtx, options)
+    .then(async () => {
+      logger.info('[OMS] Catalog sync completed')
+      await releaseLock(vbase, handle, { markSynced: true }).catch(err =>
+        logger.error(`[OMS] releaseLock after success failed: ${err?.message ?? err}`)
+      )
+    })
+    .catch(async err => {
+      const detail = err?.response?.data ?? err?.message ?? err
+      logger.error(`[OMS] Catalog sync failed: ${JSON.stringify(detail)}`)
+      await releaseLock(vbase, handle, { markSynced: false }).catch(
+        releaseErr =>
+          logger.error(
+            `[OMS] releaseLock after failure failed: ${releaseErr?.message ?? releaseErr}`
+          )
+      )
+    })
 }

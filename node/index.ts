@@ -7,6 +7,11 @@ import type {
 import { LRUCache, Service } from '@vtex/api'
 
 import { Clients } from './clients'
+import {
+  catalogSyncResetHandler,
+  catalogSyncStateHandler,
+} from './handlers/catalogSyncDebugHandlers'
+import { catalogSyncSchedulerHandler } from './handlers/catalogSyncSchedulerHandler'
 import { omsFilteredEvents } from './middlewares/oms/omsFilteredEvents'
 
 const TIMEOUT_MS = 800
@@ -67,9 +72,11 @@ export default new Service({
   events: {
     omsFilteredEvents,
   },
-  // For testing only:
-  // To enable this, add the "catalogSync" route to your service.json with the POST method.
-  // routes: {
-  //   ...catalogRoutes,
-  // },
+  routes: {
+    catalogSyncReset: catalogSyncResetHandler,
+    catalogSyncScheduler: catalogSyncSchedulerHandler,
+    catalogSyncState: catalogSyncStateHandler,
+  },
+  // For manual testing only — uncomment to expose /_v/catalog-sync
+  // catalogSync: [errorMiddleware, validateCatalogSync, catalogSyncHandler],
 })
